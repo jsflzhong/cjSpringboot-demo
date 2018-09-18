@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cj.shiro.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.cj.shiro.domain.User" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="BIGINT" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+
+    <!--组合的角色集合. 为了区分与上面字段的不同,下面的列名可以与DB中的不同-->
+    <collection property="roleList" ofType="com.cj.shiro.domain.Role" column="id">
+      <id column="roleId" property="id"/>
+      <result column="roleName" property="name"/>
+      <result column="role" property="role"/>
+
+      <!--映射角色里组合的权限集合-->
+      <collection property="permissions" ofType="com.cj.shiro.domain.Permission" column="id">
+        <id column="pId" property="id" jdbcType="VARCHAR" />
+        <result column="pUrl" property="url" jdbcType="VARCHAR" />
+        <result column="pName" property="name" jdbcType="VARCHAR" />
+        <result column="permission" property="permission" jdbcType="VARCHAR" />
+        <result column="parentId" property="parentid" jdbcType="VARCHAR" />
+        <result column="parentIds" property="parentids" jdbcType="VARCHAR" />
+      </collection>
+
+    </collection>
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, userName, realname, email, password, last_login_time, status, salt, age, create_time, 
+    create_by, update_time, update_by
+  </sql>
+
+  <!-- 自定义的方法.根据username,查询用户-角色集-权限集 -->
+  <select id="getUserRolePermissionByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    u.id, u.userName, u.realname, u.email, u.password, u.last_login_time, u.status, u.salt, u.age, u.create_time,
+    u.create_by, u.update_time, u.update_by,
+    r.id as roleId,r.name as roleName,r.role as role,
+    p.id as pId,p.url as pUrl,p.name as pName,p.permission as permission,p.parentId as parentId,p.parentIds as parentIds
+    from u_user u
+    left join u_user_role ur on u.id=ur.uid
+    left join u_role r on ur.rid=r.id
+    left join u_role_permission rp on r.id=rp.rid
+    left join u_permission p on rp.pid=p.id
+    where u.username = #{username}
+  </select>
+</mapper>

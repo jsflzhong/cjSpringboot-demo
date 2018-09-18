@@ -1,0 +1,13 @@
+
+xsquid:S1192G"\Define a constant instead of duplicating this literal "url:{}, map:{} è¯·æ±‚å¤±è´¥" 3 times.(´ƒú½üÿÿÿÿ
+wsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ôèŒ§ıÿÿÿÿ
+?squid:S1148q"#Use a logger to log this exception.(¯Óí‘úÿÿÿÿ
+ˆsquid:S1319ˆ"kThe type of the "map" object should be an interface such as "Map" rather than the implementation "HashMap".(Ğı‘ˆüÿÿÿÿ
+@squid:S1148À"#Use a logger to log this exception.(¯Óí‘úÿÿÿÿ
+xsquid:S1192="\Define a constant instead of duplicating this literal "url:{}, map:{} è¯·æ±‚æˆåŠŸ" 3 times.(æÜü„üÿÿÿÿ
+asquid:CallToDeprecatedMethod!"9Remove this use of "AsyncRestTemplate"; it is deprecated.(ÂË»³
+@squid:S1148İ"#Use a logger to log this exception.(¯Óí‘úÿÿÿÿ
+?squid:S1148F"#Use a logger to log this exception.(¯Óí‘úÿÿÿÿ
+{squid:S1488™"^Immediately return this expression instead of assigning it to the temporary variable "result".(òƒßÖûÿÿÿÿ
+_squid:S1192<"HDefine a constant instead of duplicating this literal "success" 4 times.(¦¬Ã
+osquid:S1192?"SDefine a constant instead of duplicating this literal "è¯·æ±‚ç»“æœä¸ºç©º" 4 times.(„ó°çùÿÿÿÿ

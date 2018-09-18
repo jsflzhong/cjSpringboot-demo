@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cache" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/concurrent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eventBus" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/httpclient" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rabbitMQ" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rateLimit" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/shiro" charset="UTF-8" />
+  </component>
+</project>

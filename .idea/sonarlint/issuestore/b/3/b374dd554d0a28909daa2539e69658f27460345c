@@ -1,0 +1,20 @@
+
+U
+squid:S106à"9Replace this use of System.out or System.err by a logger.(ÈÃˆ©ÿÿÿÿÿ
+P
+squid:S106Ó"9Replace this use of System.out or System.err by a logger.(éËË
+‚squid:S1488ˆ"eImmediately return this expression instead of assigning it to the temporary variable "serviceResult".(œíÇóüÿÿÿÿ
+csquid:S1192j"GDefine a constant instead of duplicating this literal "param2" 6 times.(ôğµşÿÿÿÿ
+Asquid:S1068"*Remove this unused "logger" private field.(õëù·
+isquid:S00117´"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’šá
+csquid:S11926"GDefine a constant instead of duplicating this literal "result" 4 times.(ìÑºŞûÿÿÿÿ
+^squid:S2142İ"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€
+@squid:S1148Ş"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+squid:S1488m"eImmediately return this expression instead of assigning it to the temporary variable "serviceResult".(œíÇóüÿÿÿÿ
+T
+squid:S106Q"9Replace this use of System.out or System.err by a logger.(”ÔØ”ùÿÿÿÿ
+}squid:S1488¨"eImmediately return this expression instead of assigning it to the temporary variable "serviceResult".(Ô¬¥Ï
+wsquid:S00120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ë‡àìşÿÿÿÿ
+]squid:S1192i"GDefine a constant instead of duplicating this literal "param1" 6 times.( 
+usquid:S4144ı"XUpdate this method so that its implementation is not identical to "getApi3" on line 142.(¸´´èùÿÿÿÿ
+‚squid:S1488÷"eImmediately return this expression instead of assigning it to the temporary variable "serviceResult".(œíÇóüÿÿÿÿ
