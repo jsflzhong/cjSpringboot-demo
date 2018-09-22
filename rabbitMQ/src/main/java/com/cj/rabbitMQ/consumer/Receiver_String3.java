@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 //This is the name of queue, which is listening by this consumer!
-@RabbitListener(queues = "jsflzhong.queue2", containerFactory="rabbitListenerContainerFactory")
+@RabbitListener(queues = "jsflzhong.queue1", containerFactory="rabbitListenerContainerFactory")
 public class Receiver_String3 {
 
     Logger logger = LoggerFactory.getLogger(Receiver_String3.class);

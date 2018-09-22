@@ -48,18 +48,23 @@
 
 5.Attention:
     
-    在Spring Boot中实现了RabbitMQ的自动配置，在配置文件中添加如下配置信息
-    spring.rabbitmq.host=localhost
-    spring.rabbitmq.port=5672
-    spring.rabbitmq.username=test
-    spring.rabbitmq.password=test
-    spring.rabbitmq.virtualHost=test
-    
-    后会自动创建ConnectionFactory以及RabbitTemplate对应Bean，为什么上面我们还需要手动什么呢?
-    
-    自动创建的ConnectionFactory无法完成事件的回调，即没有设置下面的代码
-    connectionFactory.setPublisherConfirms(true);
+    1>.Call back
+        在Spring Boot中实现了RabbitMQ的自动配置，在配置文件中添加如下配置信息
+        spring.rabbitmq.host=localhost
+        spring.rabbitmq.port=5672
+        spring.rabbitmq.username=test
+        spring.rabbitmq.password=test
+        spring.rabbitmq.virtualHost=test
+        
+        后会自动创建ConnectionFactory以及RabbitTemplate对应Bean，为什么上面我们还需要手动什么呢?
+        
+        自动创建的ConnectionFactory无法完成事件的回调，即没有设置下面的代码
+        connectionFactory.setPublisherConfirms(true);
 
+    2>.Banding:
+        Just because the queue does not bind the specific routing key and exchange in the configuration, 
+        does not means this queue can not consume the msg from this queue!
+        Because they could be bind together on the pag of the RabbitMq management page!!!
 
 6.Exception1:
     
@@ -115,7 +120,40 @@
 
 10.Dead message:
 
+    Logistic:
+    -->ProducerDead(produce a normal msg(Not a String ,But a Message Object this time.))
+    -->jsflzhong.queue2 (A normal business queue)
+    -->Receiver_reject_DeadMsg(Reject the msg to make it to be a dead letter.)(Need to configure this consumer to be the only one watching this business queue)
+    -->Transfer the msg into the dead queue(Need to configure the business queue previously, bind the dead queue on it!)
+    -->ProducerDead (Consume the dead msg in the dead queue)
+    
+    Exception1:
+        Caused by: com.rabbitmq.client.ShutdownSignalException: channel error; protocol method: #method<channel.close>(reply-code=406, reply-text=PRECONDITION_FAILED - inequivalent arg 'x-dead-letter-exchange' for queue 'jsflzhong.queue2' in vhost '/': received the value 'jsflzhong.dead.exchange' of type 'longstr' but current is none, class-id=50, method-id=10)
+    Analysis:
+        Because the specific business queue is already existed ! Means i configure this queue beford without binding a dead queue on it!
+        And now if i want to configure this queue again with binding another dead queue on it ,there will be this exception!
+    Solution:
+        Delete the old queue with this name, or use a new queue and bind a dead queue on it.
+
+    
+    Exception2:
+        rabbitmq No method found for class java.lang.String
+    Analysis:   
+        Not sure yet.
+    Handle:
+        Move the annotation: @RabbitListener and it's elements from the head of class into the head of function! Tested!
+
+
+    Exception3:
+        rabbitmq unknown delivery tag 1
+    Analysis:
+        This has sth to do with the callback function. 
+    Handle:
+        Leave it for now, it does not affect the execution.
         
+        
+    Attention:
+        Should use tomcat instead of Junit test, because the dead consumer need time to consume the dead letter!
 
 
 11.Done:
@@ -130,4 +168,4 @@
     
     4>.Duable of exchange,queue and message.
     
-    
+    5>.Dead letter.  DLX, DLK.

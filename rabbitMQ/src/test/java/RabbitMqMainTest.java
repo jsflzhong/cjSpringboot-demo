@@ -1,6 +1,8 @@
+import com.alibaba.fastjson.JSONObject;
 import com.cj.rabbitMQ.Application;
 import com.cj.rabbitMQ.consumer.Receiver_String1;
 import com.cj.rabbitMQ.domain.UserT;
+import com.cj.rabbitMQ.producer.ProducerDead;
 import com.cj.rabbitMQ.producer.ProducerWithCallback;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +27,8 @@ public class RabbitMqMainTest {
     private ProducerWithCallback testSender; //rabbitmq的测试用的消息生产者.
     @Autowired
     private Receiver_String1 testReceiver; //rabbitmq的测试用的消息消费者.
+    @Autowired
+    private ProducerDead producerDead; //Producer for dead msg.
 
     /**
      * Test to send string msg.
@@ -41,10 +45,10 @@ public class RabbitMqMainTest {
 
     /**
      * Test to send Message.
-     * @deprecated Not working yet!
-     * Untested
      *
      * @author cj
+     * @deprecated Not working yet!
+     * Untested
      */
     @Test
     @Deprecated
@@ -71,6 +75,20 @@ public class RabbitMqMainTest {
             testSender.send("******" + userT);
         }
 
+    }
+
+    /**
+     * Test to send Dead string msg (Rejected by the consumer).
+     * DLX
+     * Tested
+     *
+     * @author cj
+     */
+    @Test
+    public void RabbitMqSender_Dead() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("key1","value2");
+        producerDead.send(jsonObject.toJSONString());
     }
 
 }
