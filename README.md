@@ -17,6 +17,9 @@ A demo to demonstrate each functions of SpringBoot
 
 8.Integration of RabbitMQ.
 
+9.Integration of JOOQ.
+
+
 
 
 #Schedule

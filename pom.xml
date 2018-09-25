@@ -21,7 +21,8 @@
         <module>mybatis</module>
 		<module>shiro</module>
 		<module>rabbitMQ</module>
-	</modules>
+        <module>jooq</module>
+    </modules>
 
 
 	<!-- 继承本项目的父工程：官方的springboot -->
