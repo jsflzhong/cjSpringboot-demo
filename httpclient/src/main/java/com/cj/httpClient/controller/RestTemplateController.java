@@ -1,12 +1,24 @@
 package com.cj.httpClient.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cj.httpClient.po.MatrixCondition2;
+import com.cj.httpClient.po.MatrixConfig2;
+import com.cj.httpClient.po.SysMatrix2;
 import com.cj.httpClient.service.AsyncRestService;
 import com.cj.httpClient.service.RestService;
 import com.cj.httpClient.vo.ServiceResult;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -248,19 +261,19 @@ public class RestTemplateController {
         HttpHeaders headers = httpEntity.getHeaders();
         List<String> authorizationList = headers.get("Authorization");
         String value = ""; //testAuthorization
-        if(authorizationList != null && authorizationList.size() > 0) {
+        if (authorizationList != null && authorizationList.size() > 0) {
             value = authorizationList.get(0);
         }
-        logger.info("@@@用第一种方式获得的header中的自定义值:{}",value);
+        logger.info("@@@用第一种方式获得的header中的自定义值:{}", value);
 
         //获取header中的参数的方式二:
         String header = request.getHeader("Authorization");  //testAuthorization
-        logger.info("@@@用第二种方式获得的header中的自定义值:{}",header);
+        logger.info("@@@用第二种方式获得的header中的自定义值:{}", header);
 
         logger.info("@@@header:{},channel:{},goods_id:{}", header, channel, goods_id);
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("response","ok");
+        jsonObject.put("response", "ok");
         return jsonObject; //这里必须返回JSON,否则调用方封装的方法里在解析这里的response时会报错.
     }
 
@@ -390,6 +403,109 @@ public class RestTemplateController {
         paramMap.put("park1am1", k1);
         paramMap.put("k2", k2);
         return paramMap;
+    }
+
+    /****************************** apache's post ********************************/
+
+    /**
+     * Apache's post (Tested)(Recommended)
+     *
+     * @return Object
+     */
+    @RequestMapping("/postApache1")
+    public Object postApache1() {
+        //Configure it.
+        String url = "http://localhost:8080/getMatrix";
+
+        //Simulate the post body.
+        MatrixCondition2 condition = new MatrixCondition2().setType("JJ0001");
+        condition.setOtherKeyAny();
+
+        //Attention: Should use .serializeNulls() here to make sure the null is still null but "" !
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        String jsonStr = gson.toJson(condition);
+
+        List<SysMatrix2> configList = null;
+        try {
+            StringEntity entity = new StringEntity(jsonStr);
+            entity.setContentEncoding("UTF-8");
+            entity.setContentType("application/json");
+
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.setEntity(entity);
+
+            // 发起请求
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);//连接时间
+            httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);//数据传输时间
+            HttpResponse response = httpClient.execute(httpPost); //Executed
+
+            // 请求结束，返回结果。并解析json。
+            String resultString = EntityUtils.toString(response.getEntity(), CharEncoding.UTF_8);
+            MatrixConfig2 matrixConfig2 = JSONObject.parseObject(resultString, MatrixConfig2.class);
+            logger.info("@@@json : {}", resultString);
+
+            configList = matrixConfig2.getConfigs();
+            for (SysMatrix2 sysMatrix2 : configList) {
+                //Business logistic ...
+                logger.info(sysMatrix2.getValue());
+            }
+        } catch (UnsupportedEncodingException e) {
+            logger.error("@@@UnsupportedEncodingException : {}", ExceptionUtils.getStackTrace(e));
+        } catch (ClientProtocolException e) {
+            logger.error("@@@ClientProtocolException : {}", ExceptionUtils.getStackTrace(e));
+        } catch (IOException e) {
+            logger.error("@@@IOException : {}", ExceptionUtils.getStackTrace(e));
+        }
+
+        return configList;
+    }
+
+    /**
+     * Apache's post (Tested)
+     * Commented because of the annoying dependent.
+     *
+     * @return Object
+     */
+    @RequestMapping("/postApache2")
+    public Object postApache2() {
+        String MATRIX_URL_SEARCH = "http://localhost:8080/getMatrix";
+//
+//        String str = null;
+//
+//        //body
+//        MatrixCondition2 condition = new MatrixCondition2().setType("JJ0001");
+//        condition.setOtherKeyAny();
+//        Gson gson = new GsonBuilder().serializeNulls().create();
+//        String obStr = gson.toJson(condition);
+//
+//        /**响应结果字符串*/
+//        String resultString = "";
+//
+//        /**请求转发*/
+//        CloseableHttpClient httpClient = HttpClients.custom().setRedirectStrategy(new LaxRedirectStrategy()).build();
+//
+//        HttpPost httpPost = new HttpPost(MATRIX_URL_SEARCH);
+//
+//        CloseableHttpResponse response = null;
+//        try {
+//            StringEntity entity = new StringEntity(obStr, ContentType.APPLICATION_JSON);
+//            httpPost.setEntity(entity);
+//            response = httpClient.execute(httpPost);
+//
+//            /**将返回的json转化为List集合类型*/
+//            resultString = EntityUtils.toString(response.getEntity(), "utf-8");
+//            MatrixConfig2 matrixConfig =gson.fromJson(resultString, new TypeToken<MatrixConfig2>(){}.getType());
+//            List<SysMatrix2> list =  matrixConfig.getConfigs();
+//
+//            /**处理返回的结果集*/
+//            if(list != null && !list.isEmpty()) {
+//                System.out.println(list.get(0));
+//            }
+//        } catch (IOException e) {
+//            logger.info(e.getMessage());
+//        }
+        return null;
     }
 
 }
