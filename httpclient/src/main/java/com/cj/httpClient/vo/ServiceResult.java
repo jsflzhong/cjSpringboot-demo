@@ -42,4 +42,13 @@ public class ServiceResult {
         this.message = message;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "ServiceResult{" +
+                "content=" + content +
+                ", code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
