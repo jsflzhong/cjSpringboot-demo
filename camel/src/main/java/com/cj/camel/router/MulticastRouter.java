@@ -19,6 +19,10 @@ import java.util.concurrent.Executors;
 @Component
 public class MulticastRouter extends SpringRouteBuilder {
 
+    /**
+     * Tested
+     * @throws Exception Exception
+     */
     @Override
     public void configure() throws Exception {
 
