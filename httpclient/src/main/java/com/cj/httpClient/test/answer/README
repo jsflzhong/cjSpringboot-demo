@@ -1,0 +1,48 @@
+Please note:
+
+    The answer for test1 is in the package: answer.firstTest
+    The answers for test2 are in the package: answer.secondTest
+
+    Base on JAVA8.
+
+
+A brief description about test2:
+
+    We can do this through Observer pattern in java.
+    So the two objects are loosely coupled.
+    When we need to change the observer, we don't have to change the Subject.
+
+    And there are two ways to achieve this:
+    1.Design the interfaces and classes infrastructure by my self.
+        We can run the code from here:
+        com.cj.httpClient.test.answer.secondTest.firstMode.subject.WeatherDataSource.main
+    2.Design the classes with JDK's interfaces.
+        We can run the code from here:
+        com.cj.httpClient.test.answer.secondTest.secondMode.subject.WeatherDataSource.main
+
+    The difference is:
+        It is more flexible if i design the infrastructure by my self, but it would be more stable and convenient
+        by using the JDK's interface directly.
+        However,the class 'Observable' in JDK is a class but not an interface,so it would be limited.
+
+
+    Furthermore, if observers need to handle the data in a time-consuming operation,
+    then i suggest we'd better consider the overall performance of the system.
+    Because the subject may hold a large number of observer objects,
+    so if the subject operate the noticing operation in serial and synchronously,
+    then this may become a low-efficiency and time-consuming function.
+    Base on my experience,i suggest we can consider using AsyncEventBus provided by google.
+    And this is the reason why i wrote the 'thirdMode' package as the third solution for test2.
+    please check out or run the code from:
+    com.cj.httpClient.test.answer.secondTest.thirdMode.subject.WeatherDataSource.main
+    Pom:
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+
+
+Thank you
+
+Michael Cui

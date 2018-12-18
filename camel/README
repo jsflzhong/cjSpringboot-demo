@@ -1,0 +1,26 @@
+0.Entrance:
+    Check out the package:com.cj.camel.router
+1.pom
+2.com.cj.camel.Application
+3.Exception: about http4.
+    1>.Make sure the pom is right about http4.
+    2>.DO NOT import apache's "httpclient" in the pom. They will conflict.
+4.Server shut down automatically.
+    The port defined in the routeBuilder can not be same as the one in the configure file as the server's port!
+5.Controller.
+    The controller is still working when we start the camel.
+6.Jetty or tomcat.
+    The protocol in the routeBuilder is "jetty",but the container in pom can be tomcat, it still works!
+7.Components:
+    1>.RouteBuilder: Listen request, and give it to next processor.
+    2>.Processor: Get request from route and handle the data in it.
+    3>.Endpoint: Get the data "from" xxx and send the data "to" xxx (xxx are the Endpoints)
+        HTTP endpoint refers to : http://camel.apache.org/http.html
+        Stomp endpoint refers to : http://camel.apache.org/stomp.html
+8.Examples:
+    1>.HTTP server: com.cj.camel.router.HttpRouteBuilder
+    2>.CSDN router: com.cj.camel.router.CsdnRouter1
+9.Error:
+    Don't input wrong properties when "to(log xxx)" or there is no exception or error but stopping the server automatically.
+10.Error:
+    If used jsonpath() in the code ,then i must add pom:camel-jsonpath, otherwise the server will not start up.

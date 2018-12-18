@@ -24,9 +24,11 @@ A demo to demonstrate each functions of SpringBoot
 
 #Schedule
 1.Swagger
-2.Jooq
+2.Jooq --done
 3.Spring jpa
 4.Redis
-5.SpringAOP
-6.Annotation + Factory
-
+5.SpringAOP 
+6.Annotation + Factory --done
+7.Druid monitor (Check out my note 11 in linux)
+8.Transaction
+9.System Middleware (Base on CSDN)
