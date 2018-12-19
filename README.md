@@ -19,6 +19,9 @@ A demo to demonstrate each functions of SpringBoot
 
 9.Integration of JOOQ.
 
+10.Integration of Annotation + Factory.
+
+11.Integration of Camel.
 
 
 

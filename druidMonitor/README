@@ -1,0 +1,11 @@
+1.Error:NoClassDefFoundError: org/springframework/boot/bind/RelaxedDataBinder
+  Solution: update the dependency of druid into: 1.1.12
+
+2.Procedure:
+    1>.application.yml
+    2>.pom
+    3>.localhost:8081/druid/login.html
+       The id and pswd are in the application.yml
+
+3.Need to be done:
+    Optimize the parameter of druid.

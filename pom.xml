@@ -24,6 +24,7 @@
         <module>jooq</module>
         <module>annotation_spring</module>
         <module>camel</module>
+        <module>druidMonitor</module>
     </modules>
 
 
