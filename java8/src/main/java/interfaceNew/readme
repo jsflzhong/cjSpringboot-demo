@@ -1,0 +1,82 @@
+1.static方法：
+
+    java8中为接口新增了一项功能，定义一个或者多个静态方法.
+
+    注意:实现接口的类或者子接口不会继承接口中的静态方法!!!
+
+
+
+2.default方法：
+
+    java8在接口中新增default方法，是为了在现有的类库中中新增功能而不影响他们的实现类.
+
+    注意: 子类可以直接继承父接口中的default方法.
+    注意: 子类也可以覆盖父类中的default方法.
+
+
+3.@FunctionalInterface注解. 函数式接口.
+
+    有且只有一个"抽象方法"的接口被称为函数式接口，函数式接口适用于函数式编程的场景，Lambda就是Java中函数式编程的体现，
+    可以使用Lambda表达式创建一个函数式接口的对象，一定要确保接口中有且只有一个抽象方法，
+    这样Lambda才能顺利的进行推导。
+
+    函数式编程是没有副作用的，最大的好处就是函数的内部是无状态的，既输入确定输出就确定。
+
+    常用函数式4大接口:
+        1.Consumer<T>：消费型接口
+            抽象方法： void accept(T t)，接收一个参数进行消费，但"无返回结果"。
+            抽象方法:  andThen(Consumer<? super T> after)，先消费然后在消费，先执行调用andThen接口的accept方法，
+                      然后在执行andThen方法参数after中的accept方法。
+        2.Supplier<T>: 供给型接口
+            抽象方法：T get()，无参数，有返回值。
+        3.Function<T,R>: 函数型接口
+            抽象方法：  R apply(T t)，传入一个参数，"返回想要的结果"。.
+            抽象方法:   compose(Function<? super V, ? extends T> before)，先执行compose方法参数before中的apply方法，
+                       然后将执行结果传递给调用compose函数中的apply方法在执行。(类似andThen,顺序相反,暂略)
+        4.Predicate<T> ： 断言型接口
+            抽象方法： boolean test(T t),传入一个参数，返回一个布尔值。
+
+
+    摘抄网文:
+
+    java8 四大核心函数式接口Function、Consumer、Supplier、Predicate
+
+    1.Function<T, R>
+
+        T：入参类型，R：出参类型
+
+        调用方法：R apply(T t);
+
+        定义函数示例：Function<Integer, Integer> func = p -> p * 10;    // 输出入参的10倍
+
+        调用函数示例：func.apply(10);    // 结果100
+
+    2.Consumer<T>
+
+        T：入参类型；没有出参
+
+        调用方法：void accept(T t);
+
+        定义函数示例：Consumer<String> consumer= p -> System.out.println(p);    // 因为没有出参，常用于打印、发送短信等消费动作
+
+        调用函数示例：consumer.accept("18800008888");
+
+    3.Supplier<T>
+
+        T：出参类型；没有入参
+
+        调用方法：T get();
+
+        定义函数示例：Supplier<Integer> supplier= () -> 100;    // 常用于业务“有条件运行”时，符合条件再调用获取结果的应用场景；运行结果须提前定义，但不运行。
+
+        调用函数示例：supplier.get();
+
+    4.Predicate<T>
+
+        T：入参类型；出参类型是Boolean
+
+        调用方法：boolean test(T t);
+
+        定义函数示例：Predicate<Integer> predicate = p -> p % 2 == 0;    // 判断是否、是不是偶数
+
+        调用函数示例：predicate.test(100);    // 运行结果true

@@ -1,0 +1,8 @@
+1.自定义Connector:
+    随容器启动和关闭的监听器, 见包: com.cj.listener.listener.
+
+2.配置:
+    同时还需要把这些bean注册进tomcat容器中, 见配置类包: com.cj.listener.config
+
+3.测试:
+    见: com.cj.listener.controller.TestController.test1

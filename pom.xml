@@ -25,6 +25,9 @@
         <module>annotation_spring</module>
         <module>camel</module>
         <module>druidMonitor</module>
+		<module>java</module>
+        <module>java8</module>
+        <module>listener</module>
     </modules>
 
 
