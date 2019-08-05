@@ -37,3 +37,14 @@ INSERT INTO `user_t` VALUES (2, 'test2', '1212', 11);
 INSERT INTO `user_t` VALUES (3, 'test3', '123', 11);
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+DROP TABLE IF EXISTS `salary_t`;
+
+CREATE TABLE `salary_t` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `user_id` int(5) DEFAULT NULL,
+  `salary_type` varchar(10) DEFAULT NULL,
+  `amount` decimal(30,0) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

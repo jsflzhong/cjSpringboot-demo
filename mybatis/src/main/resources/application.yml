@@ -4,7 +4,7 @@ server:
 spring:
     datasource:
         name: test
-        url: jdbc:mysql://localhost:3306/test
+        # url: jdbc:mysql://localhost:3306/test
         username: root
         password:
         # 使用druid数据源(新版springBoot报错,该用jdbc)

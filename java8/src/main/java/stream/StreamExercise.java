@@ -155,9 +155,9 @@ public class StreamExercise {
     /**
      * 测试parallelStream的线程非安全性, 以及解决方案.
      */
-    static void testParallelStream() {
+    static void test8_ParallelStream() {
         //验证Java8的paralleStream是线程非安全的.
-        test3Foreach();
+        test8_Foreach();
 
         //解决方案
 
@@ -186,7 +186,7 @@ public class StreamExercise {
      *
      * 同时也提出了解决方案：使用"collect接口"和"reduce接口"。
      */
-    static void test3Foreach() {
+    static void test8_Foreach() {
 
         IntStream.range(0, 10000).forEach(list1::add); //stream的foreach
 
@@ -206,11 +206,37 @@ public class StreamExercise {
         System.out.println("加锁并行执行的大小：" + list3.size());
     }
 
-    static void testParallel() {
-        ArrayList<Integer> list = new ArrayList<>();
-        
+    /**
+     * 结果：
+     * @@@new id:1tail
+     * @@@new id:2tail
+     * @@@map: {aaa=bbb}
+     */
+    static void test9_toMap() {
+        A a1 = new A().setId("1");
+        A a2 = new A().setId("2");
+
+        List<A> list = Arrays.asList(a1, a2);
+        Map<String, String> map = list.stream().peek(a -> {
+            a.setId(a.getId() + "tail");
+        }).collect(
+                Collectors.toMap(A::func1, A::func2, (oldValue, newValue) -> newValue));
+
+        list.forEach(a -> System.out.println("@@@new id:" + a.getId()));
+        System.out.println("@@@map: " + map);
     }
 
+    /**
+     * 测试结果:
+     * @@@The new id of B in A is :3
+     */
+    static void test10_asignThenGiveValue() {
+        A a = new A().setId("1");
+        B b = new B().setId("2");
+        a.setbList(Arrays.asList(b));
+        b.setId("3");//check if the value in A's B is updated.
+        a.getbList().forEach(o -> System.out.println("@@@The new id of B in A is :" + o.getId()));
+    }
 
 
     public static void main(String[] args) {
@@ -230,6 +256,52 @@ public class StreamExercise {
 
         //test4_filter(list2); //[test1, test1]
 
-        testParallelStream();
+        //test8_ParallelStream();
+
+
+    }
+
+
+    static class A {
+        private String id;
+        List<B> bList;
+
+        public String getId() {
+            return id;
+        }
+
+        public A setId(String id) {
+            this.id = id;
+            return this;
+        }
+
+        public List<B> getbList() {
+            return bList;
+        }
+
+        public void setbList(List<B> bList) {
+            this.bList = bList;
+        }
+
+        String func1() {
+            return "aaa";
+        }
+
+        String func2() {
+            return "bbb";
+        }
+    }
+
+    static class B {
+        private String id;
+
+        public String getId() {
+            return id;
+        }
+
+        public B setId(String id) {
+            this.id = id;
+            return this;
+        }
     }
 }

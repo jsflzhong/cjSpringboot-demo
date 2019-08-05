@@ -31,3 +31,34 @@
         所以我们不需要任何额外配置,就可以直接用@Transactional注解进行事务的使用。
         com.cj.mybatis.service.impl.UserTServiceImpl.testTransaction
         已通过测试.
+        
+Swagger:
+    0.pom:
+        <swagger-spring-boot-starter.version>1.9.0.RELEASE</swagger-spring-boot-starter.version>
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>swagger-spring-boot-starter</artifactId>
+            <version>${swagger-spring-boot-starter.version}</version>
+        </dependency>
+    1.需要配置类开启swagger: com.cj.mybatis.config.ApiConfig
+    2.测试入口: com.cj.mybatis.controller.HelloWorldController.testSwagger
+    3.ui请求地址:http://localhost:8086/swagger-ui.html
+   
+   
+TODO:
+1.not null and not empty test --done
+    com.cj.mybatis.controller.HelloWorldController.testParamNotNull
+
+    1>.Use @NotNull in pojo
+    2>.Use @Valid in param list in Controller
+    3>.Use BindingResult in param list
+
+2.transaction test
+
+3.Is the list checked out from DB is not null by default? So we can foreach directly without any check? 
+
+4.swagger all useful annotation. --done
+    com.cj.mybatis.controller.HelloWorldController.testSwagger
+
+5.test @RequestBody --done
+    com.cj.mybatis.controller.HelloWorldController.testRequestBody
