@@ -16,7 +16,10 @@ public class UserT {
     @NotNull(message = "param: userName can't be null")
     private String userName;
 
-    @JsonProperty("pswd") //springMvc中responseBody返回json时会生效,该字段的key的名字会替换为这个.
+    //该注解决定了,
+    // springMvc中requestBody接收json时,该字段的key的名字在入参里应该为pswd.
+    // springMvc中responseBody返回json时,该字段的key的名字会替换为pswd.
+    @JsonProperty("pswd")
     private String password;
 
     @JsonIgnore //springMvc中responseBody返回json时会生效,该字段不会生成在json中.

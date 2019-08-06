@@ -1,6 +1,10 @@
 package com.cj.mybatis.service.impl;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.cj.mybatis.domain.UserT;
+import com.cj.mybatis.entity.ResponseBean;
 import com.cj.mybatis.service.UserTService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +36,20 @@ public class UserTServiceImpl extends BaseServiceImpl<UserT> implements UserTSer
             int i = 1/0;
         }
         return lines;
+    }
+
+    //test中测试用的方法
+    @Override
+    public ResponseBean<List<UserT>> getByUsernameForUnitTest(String userName) {
+        System.out.println("@@@getByUsernameForUnitTest is really running...");
+
+        UserT userT = new UserT();
+        userT.setId(1);
+        userT.setAge(2);
+        userT.setPassword(userName);
+        userT.setUserName("abc");
+
+        return ResponseBean.success(Arrays.asList(userT));
     }
 
 }

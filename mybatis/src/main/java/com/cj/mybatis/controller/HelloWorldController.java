@@ -9,6 +9,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -88,6 +89,17 @@ public class HelloWorldController extends BaseController{
             @PathVariable(value = "id", required = true) Integer userId) {
         UserT userT = userTService.selectByKey(userId);
         return userT;
+    }
+
+    /**
+     * getByIdWithoutDB  for unit test
+     *
+     * @return json
+     * @author cj
+     */
+    @RequestMapping(value = "/getByUsernameForUnitTest" ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Object getByUsernameForUnitTest(String userName) {
+        return userTService.getByUsernameForUnitTest(userName);
     }
 
     /**
