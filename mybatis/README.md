@@ -62,3 +62,6 @@ TODO:
 
 5.test @RequestBody --done
     com.cj.mybatis.controller.HelloWorldController.testRequestBody
+    
+6.junit test --done
+    see test package

@@ -1,0 +1,13 @@
+公共模块, 其他模块只要在自己的pom中依赖本模块即可.
+例如:
+          <dependency>
+               <groupId>com.cj</groupId>
+               <artifactId>common</artifactId>
+               <version>0.0.1-SNAPSHOT</version>
+               <scope>compile</scope>
+           </dependency>
+
+
+如果是用右边maven的lifecycle来编译或打包, 应该需要先用Maven install一下这个模块, 其他模块才可以使用这里的API.
+
+

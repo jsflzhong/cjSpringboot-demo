@@ -1,6 +1,8 @@
 package com.cj.httpClient.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cj.common.entity.ResponseBean;
+import com.cj.common.entity.StatusCode;
 import com.cj.httpClient.po.MatrixCondition2;
 import com.cj.httpClient.po.MatrixConfig2;
 import com.cj.httpClient.po.SysMatrix2;
@@ -10,6 +12,7 @@ import com.cj.httpClient.vo.ServiceResult;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpResponse;
@@ -30,22 +33,26 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Controller for RestTemplate in Spring.
  *
  * @author cj
  */
-@Controller
 @RestController
+@Slf4j
 public class RestTemplateController {
 
     private static final Logger logger = LoggerFactory.getLogger(RestTemplateController.class);
@@ -64,15 +71,22 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/get")
-    public String hello() {
+    public Object restTemplate_get() {
         String url = "http://localhost:8081/getApi";
         //在发出请求后,得到回应前,如果超过了在配置restTemplate这个bean时的setReadTimeout时间,则调用这里会抛异常:SocketTimeoutException
-        JSONObject json = restTemplate.getForEntity(url, JSONObject.class).getBody();
-        return json.toJSONString();
+        try {
+            return restTemplate.getForEntity(url, JSONObject.class).getBody();
+        } catch (RestClientException e) { //在此处可以抓到RestTemplate的超时异常.
+            logger.error("@@@restTemplate error in restTemplate_get(): {}",ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {
+            logger.error("@@@error in restTemplate_get(): {}",ExceptionUtils.getStackTrace(e));
+        }
+
+        return new ResponseBean<>(StatusCode.INTERNAL_ERROR.getCode(), StatusCode.INTERNAL_ERROR.getMsg());
     }
 
     @RequestMapping("/getApi")
-    public Object genJson() {
+    public Object restTemplate_called_genJson() {
         JSONObject json = new JSONObject();
         json.put("result", "Hello get!");
         return json;
@@ -90,7 +104,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/post")
-    public Object testPost() {
+    public Object restTemplate_post() {
         String url = "http://localhost:8081/postApi";
         JSONObject postData = new JSONObject();
         postData.put("descp", "request for post");
@@ -101,7 +115,7 @@ public class RestTemplateController {
     }
 
     @RequestMapping("/postApi")
-    public Object iAmPostApi(@RequestBody JSONObject param) { //.(Json类型的参数)
+    public Object restTemplate_called_iAmPostApi(@RequestBody JSONObject param) { //.(Json类型的参数)
         System.out.println("@@@Server accepting the json:" + param.toJSONString());
         param.put("result", "Hello post!");
         return param;
@@ -124,7 +138,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/get2")
-    public Object get() {
+    public Object restService_get1() {
         String url = "http://localhost:8081/getApi2";
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("param1", "v1");
@@ -136,7 +150,7 @@ public class RestTemplateController {
     }
 
     @RequestMapping("/getApi2")
-    public Object getApi2(String param1, String param2) {
+    public Object restService_called_getApi2(String param1, String param2) {
         JSONObject json = new JSONObject();
         json.put("param1", param1);
         json.put("param2", param2);
@@ -153,7 +167,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/get3")
-    public Object get3() {
+    public Object restService_get3() {
         //注意:如果调用以 Hashmap为参数的方法,则url需要做特殊处理,要指明对方接口的形参名.具体进去看方法注释.
         String url = "http://localhost:8081/getApi3?param1={k1}&param2={k2}";
         ImmutableMap<String, Object> paramMap = ImmutableMap.of("k1", "v1", "k2", "v2");
@@ -165,7 +179,7 @@ public class RestTemplateController {
     }
 
     @RequestMapping("/getApi3")
-    public Object getApi3(String param1, String param2) {
+    public Object restService_called_getApi3(String param1, String param2) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("param1", param1);
         paramMap.put("param2", param2);
@@ -184,7 +198,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/post2")
-    public Object testPost2() {
+    public Object restService_post2() {
         String url = "http://localhost:8081/postApi2";
 
         LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
@@ -208,7 +222,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/postApi2")
-    public Object postApi2(String channel, String goods_id) {
+    public Object restService_called_postApi2(String channel, String goods_id) {
         return "1";
     }
 
@@ -224,7 +238,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/postWithHeader")
-    public Object postWithHeader() {
+    public Object restService_postWithHeader() {
         String url = "http://localhost:8081/postWithHeaderTarget";
 
         //Self defined header
@@ -250,7 +264,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/postWithHeaderTarget")
-    public Object postWithHeaderTarget(HttpServletRequest request, HttpEntity<Map<String, Object>> httpEntity) {
+    public Object restService_called_postWithHeaderTarget(HttpServletRequest request, HttpEntity<Map<String, Object>> httpEntity) {
         //获取body中的参数.key与上面JSON中封装的key匹配.
         Map<String, Object> body = httpEntity.getBody();
         Object channel = body.get("channel"); //1
@@ -294,7 +308,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/get4")
-    public Object get4() {
+    public Object restService_Asyn_get4() {
         String url = "http://localhost:8081/getApi4";
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("param1", "v1");
@@ -310,7 +324,7 @@ public class RestTemplateController {
     }
 
     @RequestMapping("/getApi4")
-    public Object getApi4(String param1, String param2) {
+    public Object restService_Asyn_called_getApi4(String param1, String param2) {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -336,7 +350,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/get5")
-    public Object get5() {
+    public Object restService_Asyn_get5() {
         //注意:如果调用以 Hashmap为参数的方法,则url需要做特殊处理,要指明对方接口的形参名.具体进去看方法注释.
         String url = "http://localhost:8081/getApi5?param1={k1}&param2={k2}";
         ImmutableMap<String, Object> paramMap = ImmutableMap.of("k1", "v1", "k2", "v2");
@@ -349,7 +363,7 @@ public class RestTemplateController {
     }
 
     @RequestMapping("/getApi5")
-    public Object getApi5(String param1, String param2) { //v1,v2
+    public Object restService_Asyn_called_getApi5(String param1, String param2) { //v1,v2
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -376,7 +390,7 @@ public class RestTemplateController {
      * @author cj
      */
     @RequestMapping("/post3")
-    public Object post3() {
+    public Object restService_Asyn_post3() {
         String url = "http://localhost:8081/postApi3";
         LinkedMultiValueMap paramMap = new LinkedMultiValueMap();
         paramMap.add("k1", "v1");
@@ -390,7 +404,7 @@ public class RestTemplateController {
     }
 
     @RequestMapping("/postApi3")
-    public Object postApi3(String k1, String k2) { //v1,v2
+    public Object restService_Asyn_called_postApi3(String k1, String k2) { //v1,v2
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -413,7 +427,7 @@ public class RestTemplateController {
      * @return Object
      */
     @RequestMapping("/postApache1")
-    public Object postApache1() {
+    public Object apache_postApache1() {
         //Configure it.
         String url = "http://localhost:8080/getMatrix";
 
@@ -468,7 +482,7 @@ public class RestTemplateController {
      * @return Object
      */
     @RequestMapping("/postApache2")
-    public Object postApache2() {
+    public Object apache_postApache2() {
         String MATRIX_URL_SEARCH = "http://localhost:8080/getMatrix";
 //
 //        String str = null;

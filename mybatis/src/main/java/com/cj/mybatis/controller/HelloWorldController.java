@@ -1,8 +1,8 @@
 package com.cj.mybatis.controller;
 
+import com.cj.common.entity.ResponseBean;
+import com.cj.common.entity.StatusCode;
 import com.cj.mybatis.domain.UserT;
-import com.cj.mybatis.entity.ResponseBean;
-import com.cj.mybatis.entity.StatusCode;
 import com.cj.mybatis.exception.IllegalParamException;
 import com.cj.mybatis.service.UserTService;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +29,6 @@ import io.swagger.annotations.Authorization;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 /**

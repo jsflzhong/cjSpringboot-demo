@@ -1,4 +1,4 @@
-package com.cj.mybatis.entity;
+package com.cj.common.entity;
 
 import java.util.Collection;
 import java.util.Map;

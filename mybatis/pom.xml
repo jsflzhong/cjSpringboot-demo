@@ -18,6 +18,13 @@
             <!--<artifactId>pagehelper-spring-boot-starter</artifactId>-->
             <!--<version>1.1.2</version>-->
         <!--</dependency>-->
+        <!--添加公共模块的依赖-->
+        <dependency>
+            <groupId>com.cj</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

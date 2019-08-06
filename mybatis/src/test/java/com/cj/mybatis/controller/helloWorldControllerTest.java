@@ -3,9 +3,9 @@ package com.cj.mybatis.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cj.common.entity.ResponseBean;
+import com.cj.common.entity.StatusCode;
 import com.cj.mybatis.domain.UserT;
-import com.cj.mybatis.entity.ResponseBean;
-import com.cj.mybatis.entity.StatusCode;
 import com.cj.mybatis.service.UserTService;
 import org.junit.Before;
 import org.junit.Test;

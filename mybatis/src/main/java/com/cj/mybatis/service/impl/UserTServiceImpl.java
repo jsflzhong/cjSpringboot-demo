@@ -3,8 +3,8 @@ package com.cj.mybatis.service.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import com.cj.common.entity.ResponseBean;
 import com.cj.mybatis.domain.UserT;
-import com.cj.mybatis.entity.ResponseBean;
 import com.cj.mybatis.service.UserTService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

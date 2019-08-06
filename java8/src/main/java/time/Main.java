@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class Main {
@@ -20,7 +21,7 @@ public class Main {
     static long tolerance = 30;
 
     public static void main(String[] args) {
-        testDate();
+        testDate4();
     }
 
     /**
@@ -102,5 +103,14 @@ public class Main {
 
         boolean result = dateTime.equals(startDate) || dateTime.equals(endDate) || (dateTime.isAfter(startDate) && dateTime.isBefore(endDate)); //false
         System.out.println("@@@result:" + result);
+    }
+
+    static void testDate4() {
+        //2019-04-18T10:00+08:00[Asia/Shanghai]
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(
+                LocalDateTime.parse("2019-04-18T10:00:00"), ZoneId.systemDefault());
+        //2019-04-18T02:00:00Z,Asia/Shanghai
+        Clock clock = Clock.fixed(zonedDateTime.toInstant(), ZoneId.systemDefault());
+        System.out.println("@@@clock:" + clock);
     }
 }

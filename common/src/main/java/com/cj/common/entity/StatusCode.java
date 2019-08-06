@@ -1,4 +1,4 @@
-package com.cj.mybatis.entity;
+package com.cj.common.entity;
 
 public enum StatusCode {
     //The following error codes represent successful access

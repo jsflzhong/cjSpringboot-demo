@@ -28,3 +28,4 @@ hs_err_pid*
 target/
 *.iml
 .attach*
+/java8/src/main/java/JasyptUtil.java

@@ -2,8 +2,8 @@ package com.cj.mybatis.service;
 
 import java.util.List;
 
+import com.cj.common.entity.ResponseBean;
 import com.cj.mybatis.domain.UserT;
-import com.cj.mybatis.entity.ResponseBean;
 
 /**
  * Created by Jian.Cui on 2018/9/4.

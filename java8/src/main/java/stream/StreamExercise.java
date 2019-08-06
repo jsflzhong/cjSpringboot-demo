@@ -207,23 +207,30 @@ public class StreamExercise {
     }
 
     /**
+     * 测试: Collectors.toMap()
+     *
      * 结果：
-     * @@@new id:1tail
-     * @@@new id:2tail
-     * @@@map: {aaa=bbb}
+     *  @@@result map: {id1_tail=name3_tail, id2_tail=name2_tail}  //注意,由于自指定的合并函数的关系, 同样的key的情况下,新的值把老的值覆盖了.
+     *
+     * 结论:
+     *  Collectors.toMap(...), 就是把前面stream之前的集合中的每个对象,的两个字段的值拿出来作为key和value, 形成一个map.
      */
     static void test9_toMap() {
-        A a1 = new A().setId("1");
-        A a2 = new A().setId("2");
+        A a1 = new A().setId("id1").setName("name1");
+        A a2 = new A().setId("id2").setName("name2");
+        A a3 = new A().setId("id1").setName("name3"); //注意,这个id与第一个相同, 用来测试合并为map时,如果key重复之后的行为.
+        List<A> list = Arrays.asList(a1, a2, a3);
 
-        List<A> list = Arrays.asList(a1, a2);
         Map<String, String> map = list.stream().peek(a -> {
-            a.setId(a.getId() + "tail");
+            a.setId(a.getId() + "_tail");
+            a.setName(a.getName() + "_tail");
         }).collect(
-                Collectors.toMap(A::func1, A::func2, (oldValue, newValue) -> newValue));
+                //拿list中的每个对象,即每个A对象的id为key, name为value,来形成一个map.
+                //最后一个参数是一个合并函数, 意思是, 如果在把list中许多对象的两个字段变成map时, 当有重复的key出现时, 要保留新的还是老的.
+                //这里的选择是保留新值, 如果选择的是oldValue, 则会保留老值. 看上面注释中的结果项.
+                Collectors.toMap(A::getId, A::getName, (oldValue, newValue) -> newValue));
 
-        list.forEach(a -> System.out.println("@@@new id:" + a.getId()));
-        System.out.println("@@@map: " + map);
+        System.out.println("@@@result map: " + map);
     }
 
     /**
@@ -258,13 +265,25 @@ public class StreamExercise {
 
         //test8_ParallelStream();
 
+        test9_toMap();
+
 
     }
 
 
     static class A {
         private String id;
+        private String name;
         List<B> bList;
+
+        public String getName() {
+            return name;
+        }
+
+        public A setName(String name) {
+            this.name = name;
+            return this;
+        }
 
         public String getId() {
             return id;
