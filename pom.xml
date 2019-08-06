@@ -13,7 +13,7 @@
 
 	<!--声明子模块区域-->
 	<modules>
-		<module>httpclient</module>
+		<module>http-client</module>
 		<module>cache</module>
         <module>eventBus</module>
         <module>rateLimit</module>
