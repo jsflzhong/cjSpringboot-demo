@@ -28,7 +28,9 @@
         <module>java8</module>
         <module>listener</module>
 		<module>common</module>
-	</modules>
+        <module>angularJS</module>
+        <module>swagger</module>
+    </modules>
 
 
 	<!-- 继承本项目的父工程：官方的springboot -->

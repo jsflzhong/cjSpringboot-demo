@@ -1,9 +1,10 @@
 package com.cj.mybatis.controller;
 
+import com.cj.common.controller.BaseController;
 import com.cj.common.entity.ResponseBean;
 import com.cj.common.entity.StatusCode;
 import com.cj.mybatis.domain.UserT;
-import com.cj.mybatis.exception.IllegalParamException;
+import com.cj.common.exception.IllegalParamException;
 import com.cj.mybatis.service.UserTService;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("helloWorldController")
 @RestController
-public class HelloWorldController extends BaseController{
+public class HelloWorldController extends BaseController {
 
     private final static Logger logger = LoggerFactory.getLogger(HelloWorldController.class);
 

@@ -46,19 +46,20 @@ public class JunitControllerTest {
         // 1、get(无参) 查询用户列表list
         request = get("/user");
         mvc.perform(request) //执行调用
-                .andDo(print())
-                .andExpect(status().isOk())
+                .andDo(print()) //添加一个结果处理器，表示要对结果做点什么事情，比如此处使用MockMvcResultHandlers.print()输出整个响应结果信息
+                .andExpect(status().isOk()) //看请求的状态响应码是否为200如果不是则抛异常，测试不通过
                 .andExpect(content().string(equalTo("[{\"id\":1,\"userName\":\"abc\",\"pswd\":\"a\"},{\"id\":2,\"userName\":\"abcd\",\"pswd\":\"b\"}]")));
 
         // 2、post 新建一个用户
         request = post("/user/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON) //发送端发送的数据格式是application/json;charset=UTF-8
+                .accept(MediaType.APPLICATION_JSON) //客户端希望接受的数据类型为application/json;charset=UTF-8
                 .content("{\"id\":\"1\",\"userName\":\"zxc\",\"age\":18}");
         mvc.perform(request)
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.userName", equalTo("zxc")));
+                .andExpect(status().isOk()) //添加执行完成后的断言
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userName", equalTo("zxc"))) //这两行都可以等同于equals.
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userName").value("zxc"));
 
         // 3、get查一下user列表，应该不为空 (如果第一步查询的是空白的表,第二步新建了一个用户, 那么这一步就查出来用户不为空了. 但是本次第一步就假设能查出来用户了, 所以注释掉该步骤.
        /*request = get("/user");

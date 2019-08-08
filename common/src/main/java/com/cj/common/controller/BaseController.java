@@ -1,8 +1,8 @@
-package com.cj.mybatis.controller;
+package com.cj.common.controller;
 
 import java.util.stream.Collectors;
 
-import com.cj.mybatis.exception.IllegalParamException;
+import com.cj.common.exception.IllegalParamException;
 import org.springframework.validation.BindingResult;
 
 public class BaseController {
