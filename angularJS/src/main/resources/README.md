@@ -25,3 +25,10 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+Myself:
+
+1.关于组件和模块的介绍,见:src/app/app.component.ts 和 src/app/app.module.ts 中的注释.
+
+2.
