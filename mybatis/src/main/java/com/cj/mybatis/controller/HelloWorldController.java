@@ -116,6 +116,11 @@ public class HelloWorldController extends BaseController {
         criteria.andEqualTo("age", 11)
                 .andEqualTo("userName", "test2");
         List<UserT> userTList = userTService.selectByExample(example);
+
+        //test not null with stream.
+        //Ok. 没有空指针异常.
+        userTList.forEach(e -> System.out.println("@@@UserT的id为: " + e.getId()));
+
         return userTList;
     }
 
@@ -277,6 +282,22 @@ public class HelloWorldController extends BaseController {
         userT.setId(id);
         int lines = userTService.testTransaction(userT);
         return lines;
+    }
+
+    /**
+     * Test transaction in a same class.
+     * Tested
+     *
+     * @return json
+     * @author cj
+     */
+    @GetMapping("/testTransaction_inSameClass")
+    @ResponseBody
+    public Object testTransaction_inSameClass(String userName, String pswd) {
+        UserT userT = new UserT();
+        userT.setUserName(userName);
+        userT.setPassword(pswd);
+        return userTService.testTransaction_inSameClass(userT);
     }
 
     /**

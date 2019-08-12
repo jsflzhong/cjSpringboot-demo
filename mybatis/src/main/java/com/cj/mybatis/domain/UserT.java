@@ -1,10 +1,13 @@
 package com.cj.mybatis.domain;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.validation.annotation.Validated;
 
 @Table(name = "user_t")
 public class UserT {
@@ -13,7 +16,8 @@ public class UserT {
     private Integer id;
 
     @Column(name = "user_name")
-    @NotNull(message = "param: userName can't be null")
+    @NotNull(message = "@@@如果值只有一个空格, 不会被该注解检查出来! 所以该注解一般用于基础类型!")
+    @NotEmpty(message = "@@@如果值只有一个空格, 也会被该注解检查出来. 所以该注解一般用于String.")
     private String userName;
 
     //该注解决定了,

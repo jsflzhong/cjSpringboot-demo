@@ -52,10 +52,14 @@ TODO:
     1>.Use @NotNull in pojo
     2>.Use @Valid in param list in Controller
     3>.Use BindingResult in param list
+    4>.@Empty for String ! @NotNull for basic type! 因为如果值只有一个空格的话,@Empty也能检查出来,但是@NotNull就不行!
 
 2.transaction test
 
-3.Is the list checked out from DB is not null by default? So we can foreach directly without any check? 
+3.Is the list checked out from DB is not null by default?  --done
+    So we can foreach directly without any check? --done
+      Ok. 没有空指针异常. list是初始化了的,不是null. 只是size为0而已.
+      com.cj.mybatis.controller.HelloWorldController.getByExample
 
 4.swagger all useful annotation. --done
     com.cj.mybatis.controller.HelloWorldController.testSwagger
@@ -65,3 +69,7 @@ TODO:
     
 6.junit test --done
     see test package
+
+7.@NotEmpty for loading data from db with mybatis. --done
+    useless! not for mybaits or ORM!
+   
