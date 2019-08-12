@@ -91,33 +91,43 @@ public class Main {
      * ***类似Caffeine, "提供数据"的动作转移到调用方来提供, "处理数据"的动作由这里统一进行, 可变的部分由形参传入.
      *
      * @param changeable 可变的部分.
-     * @param userDateProvider 自定义的函数接口.
+     * @param dateProvider 自定义的函数接口.
      */
-    static void handleUserList(String changeable, UserDateProvider userDateProvider) {
+    static void handleUserList(String changeable, DataProvider<User> dateProvider) {
         //执行获取用户对象的集合的动作. 具体的获取方式, 由调用方自行决定.
-        List<User> userList = userDateProvider.provide();
+        List<User> userList = dateProvider.provide();
 
         //处理数据集的逻辑.
         //该部分包含可变的值, 由形参传入.
-        Optional.ofNullable(userList).ifPresent(list -> {
-            list.forEach(user -> {
-                User user2 = new User();
-                user2.setId(user.getId());
-                //每个调用方可能不同的部分, 由参数传入.
-                user2.setName(changeable);
-                System.out.println(user2.getId());
-            });
-        });
+        Optional.ofNullable(userList).ifPresent(list -> list.forEach(user -> {
+            User user2 = new User();
+            user2.setId(user.getId());
+            //每个调用方可能不同的部分, 由参数传入.
+            user2.setName(changeable);
+            System.out.println(user2.getId());
+        }));
     }
 
     /**
      * 自定义一个空参和1返回值的FI.
      * 用来定义: 获取User对象集合的动作.
+     *
+     * 该接口可以优化, 应该与业务分离, 用泛型使其与User分离. 下面有.
      */
     @FunctionalInterface
-    private interface UserDateProvider {
+    private interface UserDataProvider {
         //获取User的数据集
         public List<User> provide();
+    }
+
+    /**
+     * 对UserDataProvider的优化.
+     * @param <T>
+     */
+    @FunctionalInterface
+    private interface DataProvider<T> {
+        //获取User的数据集
+        public List<T> provide();
     }
 
     /**
