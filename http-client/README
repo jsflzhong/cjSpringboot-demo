@@ -1,0 +1,10 @@
+1.利用Spring的RestTemplate发送HTTP请求, 见:
+  controller: com.cj.httpClient.controller.RestTemplateController
+  configuration: com.cj.httpClient.configuration.RestTemplate
+
+2.利用Spring的WebClient发送HTTP请求, 见:
+  com.cj.httpClient.controller.WebclientController
+
+3.Spring的retry机制:
+
+

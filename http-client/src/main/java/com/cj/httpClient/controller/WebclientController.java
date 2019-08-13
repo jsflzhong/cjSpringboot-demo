@@ -28,7 +28,8 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Jian.Cui
  */
-@RestController("/webclientController")
+@RestController
+@RequestMapping("/webclientController")
 public class WebclientController {
 
     private Logger logger = LoggerFactory.getLogger(WebclientController.class);

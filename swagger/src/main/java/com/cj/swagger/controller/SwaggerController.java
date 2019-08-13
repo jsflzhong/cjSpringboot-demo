@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,8 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import lombok.extern.slf4j.Slf4j;
 
-@RestController("/swaggerController")
+@RestController
+@RequestMapping("/swaggerController")
 @Slf4j
 public class SwaggerController extends BaseController {
 
