@@ -28,16 +28,16 @@ import lombok.extern.slf4j.Slf4j;
 public class Period3Controller {
 
     @Autowired
-    @Qualifier("period3ServiceMap") //注意要用该注解来指定要加载的bean. 否则会默认加载spring自己封装的map, 可那样map的key就不是我们自己能定义的了,而是bean的名字.
-    Map<String, Period3Service> period3ServiceMap;
+    @Qualifier("period3ServiceHolder") //注意要用该注解来指定要加载的bean. 否则会默认加载spring自己封装的map, 可那样map的key就不是我们自己能定义的了,而是bean的名字.
+    Map<String, Period3Service> period3ServiceHolder;
 
     @RequestMapping("/test1")
     public Object test1() {
-        log.info(period3ServiceMap.toString());
+        log.info(period3ServiceHolder.toString());
 
-        period3ServiceMap.get(Identification.PERIOD_03_a).process();  //@@@Period3Impl01 is running...
+        period3ServiceHolder.get(Identification.PERIOD_03_a).process();  //@@@Period3Impl01 is running...
 
-        period3ServiceMap.get(Identification.PERIOD_03_b).process();  //@@@Period3Impl02 is running...
+        period3ServiceHolder.get(Identification.PERIOD_03_b).process();  //@@@Period3Impl02 is running...
 
         return 1;
     }

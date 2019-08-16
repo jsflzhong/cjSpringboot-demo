@@ -18,8 +18,8 @@ public class BeanMapConfig {
     @Autowired
     ApplicationContext applicationContext;
 
-    @Bean(name = "period3ServiceMap")
-    public Map<String, Period3Service> period3ServiceMap() {
+    @Bean(name = "period3ServiceHolder")
+    public Map<String, Period3Service> period3ServiceHolder() {
         HashMap<String, Period3Service> beansMap = new HashMap<>();
         Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(Period3.class);
         beansWithAnnotation.values().forEach(beanClass -> {
@@ -30,4 +30,6 @@ public class BeanMapConfig {
         });
         return beansMap;
     }
+
+    /**其他的同父接口的beans map, 可以在此配置类中继续往下面定义. 这样所有的beans map就可以统一管理了.*/
 }
