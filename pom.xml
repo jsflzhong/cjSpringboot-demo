@@ -30,6 +30,7 @@
 		<module>common</module>
         <module>angularJS</module>
         <module>swagger</module>
+        <module>spring</module>
     </modules>
 
 

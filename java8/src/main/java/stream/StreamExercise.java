@@ -146,6 +146,35 @@ public class StreamExercise {
         System.out.println(resultList); //[tEst1, test2]
     }
 
+    /**
+     * 3.5.2.sorted advanced
+     * 排序容器
+     * 测试内容:
+     *  先filter, 然后先按age排序, 再按workingTime排序,最后只拿出第一个,即年龄最大,工龄最长的那个.
+     *
+     * 测试结果:
+     *  @@@排序后,年龄最大且工龄最大的对象是:A{id='7_plus', name='null', age=7, workingTime=13, bList=null}
+     *
+     * tested
+     */
+    public static void test7_sorted_advanced() {
+        List<A> list = getAs(10);
+        //放入一个年龄相同,工龄不同的元素.
+        list.add(new A().setId("7_plus").setAge(7).setWorkingTime(13));
+
+        Optional<A> firstOptional = list.stream()
+                .filter(a -> a.getAge() < 8) //过滤,只要年龄小于8的.
+                .sorted(Comparator.comparing(A::getAge).reversed()
+                        .thenComparing(Comparator.comparing(A::getWorkingTime).reversed()))//找最大的, 先按年龄排序,相同的再按工龄排序.
+                .findFirst();
+
+        //判断是否存在, 存在了再拿值
+        if(firstOptional.isPresent()) {
+            A a = firstOptional.get();
+            System.out.println("@@@排序后,年龄最大且工龄最大的对象是:" +a);
+        }
+    }
+
 
     private static List<Integer> list1 = new ArrayList<>();
     private static List<Integer> list2 = new ArrayList<>();
@@ -245,6 +274,17 @@ public class StreamExercise {
         a.getbList().forEach(o -> System.out.println("@@@The new id of B in A is :" + o.getId()));
     }
 
+    static List<A> getAs(int amount) {
+        ArrayList<A> aList = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            int age = i + 1;
+            int workingTime = i + 5;
+            A a = new A().setName("name_" + (i + 1)).setId((i + 1) + "").setAge(age).setWorkingTime(workingTime);
+            aList.add(a);
+        }
+        return aList;
+    }
+
 
     public static void main(String[] args) {
         //ArrayList<String> list = Lists.newArrayList("test1", "tEst2", "Test3");
@@ -265,7 +305,9 @@ public class StreamExercise {
 
         //test8_ParallelStream();
 
-        test9_toMap();
+        //test9_toMap();
+
+        test7_sorted_advanced();
 
 
     }
@@ -274,7 +316,27 @@ public class StreamExercise {
     static class A {
         private String id;
         private String name;
+        private int age;
+        private int workingTime;
         List<B> bList;
+
+        public int getWorkingTime() {
+            return workingTime;
+        }
+
+        public A setWorkingTime(int workingTime) {
+            this.workingTime = workingTime;
+            return this;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public A setAge(int age) {
+            this.age = age;
+            return this;
+        }
 
         public String getName() {
             return name;
@@ -308,6 +370,17 @@ public class StreamExercise {
 
         String func2() {
             return "bbb";
+        }
+
+        @Override
+        public String toString() {
+            return "A{" +
+                    "id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    ", age=" + age +
+                    ", workingTime=" + workingTime +
+                    ", bList=" + bList +
+                    '}';
         }
     }
 

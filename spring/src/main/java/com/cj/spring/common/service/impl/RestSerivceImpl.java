@@ -1,10 +1,10 @@
-package com.cj.swagger.service.impl;
+package com.cj.spring.common.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cj.swagger.entity.UserT;
-import com.cj.swagger.service.RestSerivce;
+import com.cj.spring.common.entity.UserT;
+import com.cj.spring.common.service.RestSerivce;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

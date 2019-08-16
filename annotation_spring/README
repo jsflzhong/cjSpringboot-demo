@@ -1,0 +1,43 @@
+统一接口和抽象工厂模式的管理方案
+
+1.方案1:map.
+  缺点: 需要手动管理新的bean. 且需要全局MAP来保存beans.
+
+2.方案2:annotation + initializer + global map.
+  缺点: 编程略复杂. 且需要全局MAP来保存beans.
+  优点: 动态配置新的bean,不用手动维护map
+  见:
+  com.cj.anotation_spring.controller.EntranceController
+  com.cj.anotation_spring.Initializer.PaymentHandlerInitializer
+  factory应该可以省掉.
+
+3.方案3: annotation + initializer + @bean(map)
+  缺点:
+      编程略复杂,且有坑!
+  坑: 问题("spring自动封装bean的map"):
+        如果一个上层接口A有多个实现类, 那么当我用@Autowire注入一个map<String, 接口A>时, spring会自动把这些实现类都放入到这个map里, 把这个map当做一个bean供我们调用.
+        map的key固定就是实现类的Bean名字.
+        所以, 如果在@Configuration中用@Bean自定义了一个和上面一样的自定义的key的map后,如果用@Autowire注入到其他类中,会发现拿不到这个自定义的map,而拿到的还是上面spring默认的map,
+        即, key还是bean名. (已亲测)
+      解决:
+        所以,如果想拿到自己定义的那个map,需要在@Autowire字段上再用@Qualifier("自定义的bean map的bean 名字")才可以.
+  优点:
+      算是去掉了全局map, 把这些map放入了IOC中当做Bean管理. 更方便.
+  见:
+      com.cj.anotation_spring.controller.Period3Controller
+      com.cj.anotation_spring.config.BeanMapConfig
+
+4.针对"spring自动封装bean的map"的现象的分析:
+  优点:
+    该特性可以免去我们自己在配置类中再手动把同接口的实现类封装进一个自定义的map.
+  缺点:
+    map的key是无法自定义的, 也就不能用常量, 无法与业务平滑结合,免不了还是要对业务的几种情况做if/else判断; 也不是很直观和优雅.
+    但是,如果用上面方案3,自定义注解的值就是map的key, 这样我就可以把业务与框架结合起来了.免去了大量的if/else.
+
+
+
+
+
+
+
+
