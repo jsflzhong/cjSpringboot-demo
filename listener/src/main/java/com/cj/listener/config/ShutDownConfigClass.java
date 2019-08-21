@@ -6,8 +6,11 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 关闭服务时的监听器的配置文件
+ */
 @Configuration
-public class ConfigClass {
+public class ShutDownConfigClass {
 
     /**
      * 可以在目标类上用@Component直接使其成为一个bean,而不用这里的这个方法.

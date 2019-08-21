@@ -1,4 +1,4 @@
-package com.cj.spring.controller;
+package com.cj.spring.rest;
 
 import java.util.List;
 
