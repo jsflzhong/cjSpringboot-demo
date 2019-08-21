@@ -7,6 +7,7 @@ import com.cj.spring.common.service.RestSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/v1")
 @Slf4j
 public class RestStartedController {
 
@@ -35,7 +36,7 @@ public class RestStartedController {
      * 该status可以在postman里看到.
      */
     @ApiOperation(value = "test get function.", notes = "test notes")
-    @GetMapping("/user")
+    @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<UserT> list() {
         return restService.findAll();
@@ -47,7 +48,7 @@ public class RestStartedController {
      * @param id 用户ID
      * @return 用户信息
      */
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public UserT get(@PathVariable("id") long id) {
         return restService.findOne(id);
     }
@@ -60,7 +61,7 @@ public class RestStartedController {
      * <p>
      * 该status一般用于新建数据时返回.
      */
-    @PostMapping("/user")
+    @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     public UserT create(@RequestBody UserT user) {
         return restService.save(user);
@@ -72,9 +73,20 @@ public class RestStartedController {
      * @param user 用户信息
      * @return
      */
-    @PutMapping("/user")
+    @PutMapping("/users")
     public UserT update(@RequestBody UserT user) {
         return restService.update(user);
+    }
+
+    /**
+     * 测试:
+     *  空返回值时,HttpStatus 如何被调用端感知.
+     * @param request
+     */
+    @PatchMapping("/users")
+    @ResponseStatus(HttpStatus.OK)
+    public void patchApplicationData(@RequestBody UserT request) {
+        log.info("@@@patchApplicationData...");
     }
 
 }
