@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import com.cj.common.entity.ResponseBean;
+
 public class Main implements JudgeAndExecute {
 
     public static void main(String[] args) {
@@ -21,7 +23,9 @@ public class Main implements JudgeAndExecute {
 
         //testMap();
 
-        testGetFromListAndMap();
+        //testGetFromListAndMap();
+
+        testIfObjectNull();
     }
 
     /**
@@ -156,5 +160,23 @@ public class Main implements JudgeAndExecute {
         if(StringUtils.isNotEmpty(orderId3)) {
             System.out.println("@@@orderId3:" + orderId3);
         }
+    }
+
+    /**
+     * 如果对象是null,则初始化一个给它, 否则不动它.
+     * 测试结果:
+     *  如果对象引用有值, 则不会覆盖,还是用原来的值,
+     *  如果对象引用的值为null, 则给他个新的值.
+     *
+     *  测试结果是该方式可用.
+     */
+    static void testIfObjectNull() {
+        //ResponseBean responseBean = null;
+        ResponseBean responseBean = new ResponseBean(0,"@@@msg0");
+
+        responseBean = Optional.ofNullable(responseBean).orElse(new ResponseBean(1,"@@@msg1"));
+
+        System.out.println(responseBean);
+
     }
 }
