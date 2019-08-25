@@ -80,7 +80,10 @@ public class RestStartedController {
 
     /**
      * 测试:
-     *  空返回值时,HttpStatus 如何被调用端感知.
+     *  空返回值时, HttpStatus如何被调用端感知.
+     *
+     *  测试结果:
+     *      postman中的status会显示出返回的结果.
      * @param request
      */
     @PatchMapping("/users")
