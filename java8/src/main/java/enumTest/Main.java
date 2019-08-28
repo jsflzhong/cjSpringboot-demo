@@ -5,12 +5,17 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        test3();
+        test1();
     }
 
     static void test1() {
+        //返回的类型是Enum
         Enum1 username = Enum1.USERNAME;
-        System.out.println(username); //USERNAME
+        System.out.println("username:" + username); //username:USERNAME
+
+        //返回String, 值本质上与上面相同.
+        String name = Enum1.USERNAME.name();
+        System.out.println("name:" + name);//name:USERNAME
     }
 
     static void test2() {

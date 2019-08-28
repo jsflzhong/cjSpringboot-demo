@@ -7,12 +7,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class Main {
 
     public static void main(String[] args) {
-        test_notNullAndEquals("aaa");
+        Boolean_test3();
 
         //test_listNotNull();
 
@@ -79,6 +80,17 @@ public class Main {
 
         //建议方案2: (java8)
         Optional.ofNullable(list1).ifPresent(o -> System.out.println("333"));
+    }
+
+    public static void Boolean_test3() {
+        Boolean a = new Boolean(true);
+        Boolean b = new Boolean(false);
+
+        System.out.println(BooleanUtils.isFalse(a)); //false
+        System.out.println(BooleanUtils.isFalse(b));//true
+
+        System.out.println(BooleanUtils.isTrue(a));//true
+        System.out.println(BooleanUtils.isTrue(b));//false
     }
 
     /**

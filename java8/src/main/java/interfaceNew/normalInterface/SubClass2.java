@@ -1,6 +1,9 @@
 package interfaceNew.normalInterface;
 
-public class SubClass2 implements SuperInterface {
+import org.springframework.stereotype.Component;
+
+@Component
+public class SubClass2 implements SuperInterface1 {
 
     /**
      * 子类也可以覆盖父接口中的default方法
