@@ -1,4 +1,4 @@
-package com.cj.spring.controller;
+package com.cj.spring.exceptionHandler;
 
 import com.cj.common.exception.IllegalParamException;
 import com.cj.spring.common.entity.UserT;

@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class Main {
@@ -80,6 +81,14 @@ public class Main {
         //建议方案2: (java8)
         Optional.ofNullable(list1).ifPresent(o -> System.out.println("333"));
     }
+
+    //3.对数组判空
+    static void test_arrayNotNull() {
+        String[] a = null;
+        ArrayUtils.isEmpty(a);
+    }
+
+
 
     /**
      * ***当多个地方用到了: 获取数据的动作 + 拿着这个数据来进行有共性的一系列逻辑 的时候,可以把动作封装成函数接口, 把可变的值当做参数传入.s
