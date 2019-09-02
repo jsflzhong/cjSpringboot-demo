@@ -11,7 +11,7 @@
   com.cj.anotation_spring.Initializer.PaymentHandlerInitializer
   factory应该可以省掉.
 
-3.方案3: annotation + initializer + @bean(map)
+3.方案3: annotation + initializer + @bean(map)  (推荐)
   缺点:
       编程略复杂,且有坑!
   坑: 问题("spring自动封装bean的map"):
@@ -34,7 +34,31 @@
     map的key是无法自定义的, 也就不能用常量, 无法与业务平滑结合,免不了还是要对业务的几种情况做if/else判断; 也不是很直观和优雅.
     但是,如果用上面方案3,自定义注解的值就是map的key, 这样我就可以把业务与框架结合起来了.免去了大量的if/else.
 
+5.方案4 (还是推荐上面的方案3, 更优雅. 这里的方案4仅供了解.)
+  不用注解, 而是在每个实现类bean中,设置一个getter()方法,每个bean在这个方法中返回唯一标识,类似自定义注解的值.
+  然后在要使用它的业务bean中注入它时,例如上述第4条中的:"spring自动封装bean的map"的现象,
+  把目标bean的map集合注入进来,但是key是bean的名称,
+  所以还需要在业务bean中,用@PostConstruct,先定义一个map,再迭代上面自动封装的map,然后利用
+  自定义的getter方法,拿出那个自定义的每个bean的唯一标识,重新组装一个map.
+  优点:
+    不用自定义注解或map,前期方便.
+  缺点:
+    要使用它们的地方不方便. 还需要在构造自己前, 再各自迭代上述map,还得再构造一个额外的map来保存beans和自定义的key.
+    例如:
+    @Component
+    public class AAA {
+        private Map<EvoDocumentTypeEnum, EvoDocumentService> aMap;
 
+        @Autowired
+        private List<BaseService> strategyServices;
+
+        @PostConstruct
+        private void init() {
+            strategyServiceMap = Maps.newHashMap();
+            strategyServices.forEach(strategy -> {
+                aMap.put(strategy.getDocumentType(), strategy);
+            });
+        }
 
 
 

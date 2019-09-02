@@ -14,10 +14,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.cj</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.10.0</version>
         </dependency>
     </dependencies>
+
+
 
 </project>

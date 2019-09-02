@@ -6,3 +6,51 @@
 
 3.测试:
     见: com.cj.listener.controller.TestController.test1
+
+
+前置拦截器:
+  1.过滤器filter:不需要配置, 只需要一个类即可.
+    com.cj.listener.listener.startupListener.filter.PreFilter1
+  2.拦截器interceptor:
+    com.cj.listener.listener.startupListener.interceptor.PreInterceptor1
+    需要配置类:
+    com.cj.listener.config.StartupConfigClass
+  3.监听器listener,需要在启动类中添加配置代码.
+    前置监听器有不同的启动时机,具体看各监听器类头上的注释.
+
+
+拦截器生命周期:
+
+1.在容器启动时:
+  2019-08-21 09:27:03.457 INFO  --- [main] c.c.l.l.s.listener.PreListener1 - @@@PreListener1 getOrder...
+  2019-08-21 09:27:03.582 INFO  --- [restartedMain] c.c.l.l.s.listener.PreListener1 - @@@PreListener1 getOrder...
+  2019-08-21 09:27:05.318 INFO  --- [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8087 (http)
+  2019-08-21 09:27:05.647 INFO  --- [localhost-startStop-1] c.c.l.l.s.filter.PreFilter1 - @@@PreFilter1 init...
+
+  2019-08-21 09:27:06.584 INFO  --- [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8087 (http) with context path ''
+  2019-08-21 09:27:06.584 INFO  --- [restartedMain] com.cj.listener.Application - Started Application in 3.002 seconds (JVM running for 4.048)
+
+  2019-08-21 09:27:06.584 INFO  --- [restartedMain] c.c.l.l.s.listener.PreListener2 - @@@PreListener2 getOrder...
+  2019-08-21 09:27:06.584 INFO  --- [restartedMain] c.c.l.l.s.listener.PreListener2 - @@@PreListener2 onApplicationEvent...
+
+  @@@PreListener3 onApplicationEvent...
+
+
+2.在请求到达controller之前:
+  2019-08-21 09:30:05.529 INFO  --- [http-nio-8087-exec-1] c.c.l.l.s.filter.PreFilter1 - @@@PreFilter1 doFilter...
+  2019-08-21 09:30:05.533 INFO  --- [http-nio-8087-exec-1] c.c.l.l.s.i.PreInterceptor1 - @@@PreInterceptor1 preHandle...
+
+3.在请求从controller返回后:
+  2019-08-21 09:30:15.553 INFO  --- [http-nio-8087-exec-1] c.c.l.l.s.i.PreInterceptor1 - @@@PreInterceptor1 postHandle...
+  2019-08-21 09:30:15.553 INFO  --- [http-nio-8087-exec-1] c.c.l.l.s.i.PreInterceptor1 - @@@PreInterceptor1 afterCompletion...
+
+
+结论:
+  当想只在容器启动时做事情时,用listener.
+    启动顺序:
+      1.ApplicationStartingEvent
+      2.ApplicationStartedEvent
+      3.ApplicationReadyEvent
+  当想拦截请求时,优先用interceptor 或 filter.
+  当想安全关闭容器时,用ShutdownListener1
+

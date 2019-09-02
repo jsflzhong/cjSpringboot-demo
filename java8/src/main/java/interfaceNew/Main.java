@@ -1,13 +1,12 @@
 package interfaceNew;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import interfaceNew.Exception.BusinessException;
 import interfaceNew.Exception.CheckedException;
 import interfaceNew.functionalInterface.FunctionalInterface1;
 import interfaceNew.functionalInterface.JudgeAndExecute;
 import interfaceNew.normalInterface.SubClass1;
 import interfaceNew.normalInterface.SubClass2;
-import interfaceNew.normalInterface.SuperInterface;
+import interfaceNew.normalInterface.SuperInterface1;
 import interfaceNew.parameter.BusinessParam;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,7 +22,7 @@ public class Main implements JudgeAndExecute {
 
         //1.注意:实现接口的类或者子接口不会继承父接口中的静态方法.
         System.out.println("@@@@@@@@@ Test1 @@@@@@@@@@");
-        SuperInterface.staticFunction();//@@@This is the static function in super interface.
+        SuperInterface1.staticFunction();//@@@This is the static function in super interface.
 
         //2.子类可以直接继承父接口中的default方法.
         System.out.println("@@@@@@@@@ Test2 @@@@@@@@@@");
