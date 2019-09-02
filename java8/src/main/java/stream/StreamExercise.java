@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import Common.User;
+
 /**
  * 对流的操作.
  * 分三种大类:
@@ -285,6 +287,22 @@ public class StreamExercise {
         return aList;
     }
 
+    /**
+     * 拿出list中的第一个Pojo的id并直接转换并返回该字符串(或int).
+     * 应用场景: 从DB查出一个list, 只需要随便一个元素的某个字段即可.
+     */
+    public static void test11_getfirstElementId() {
+        List<User> userList = Arrays.asList(new User().setId(1), new User().setId(2));
+
+        List<User> userListNull = null;
+
+        Integer id = userList.stream().findFirst().map(o -> o.getId()).get();
+        System.out.println("id:" + id);//1
+
+        Integer id2 = userListNull.stream().map(o -> o.getId()).findFirst().get();
+        System.out.println("when null list: id2:" + id2); //NullPointerException! (但是mybatis返回的List是默认非null的, 里面的obj会被初始化)
+    }
+
 
     public static void main(String[] args) {
         //ArrayList<String> list = Lists.newArrayList("test1", "tEst2", "Test3");
@@ -307,7 +325,9 @@ public class StreamExercise {
 
         //test9_toMap();
 
-        test7_sorted_advanced();
+        //test7_sorted_advanced();
+
+        test11_getfirstElementId();
 
 
     }
