@@ -44,6 +44,7 @@ public class ForObject {
             // 虽然是运行时异常, 但上层代码注意要捕获它然后处理: IllegalArgumentException
             // 这种方式比起在上面的if中手动写抛出异常,可以至少省出两行代码空间.
             Assert.notNull(user, "@@@user is null!");
+            System.out.println("由于上行代码抛异常了,所以这里不会被执行到.");
         } catch (IllegalArgumentException e) {
             System.out.println("@@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常,模拟在这里处理...");
         }
