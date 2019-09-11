@@ -1,10 +1,13 @@
 package com.cj.anotation_spring.config;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.cj.anotation_spring.annotation.EnumAnnotation;
 import com.cj.anotation_spring.annotation.Period3;
-import com.cj.anotation_spring.service.Impl.Period3Impl01;
+import com.cj.anotation_spring.constant.TestEventEnum;
+import com.cj.anotation_spring.service.Impl.EnumAnnotationProcessor;
 import com.cj.anotation_spring.service.Period3Service;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +35,25 @@ public class BeanMapConfig {
     }
 
     /**其他的同父接口的beans map, 可以在此配置类中继续往下面定义. 这样所有的beans map就可以统一管理了.*/
+
+    /**
+     * 使用:
+     *      @Qualifier("enumAnnotationProcessorMapConsumerMap")
+     *      private Map<TestEventEnum, EnumAnnotationProcessor> enumAnnotationProcessor;
+     *
+     * @return
+     */
+    @Bean(name = "enumAnnotationProcessorMapConsumerMap")
+    public Map<TestEventEnum, EnumAnnotationProcessor> enumAnnotationProcessorMapConsumerMap() {
+        Map<TestEventEnum, EnumAnnotationProcessor> beansMap = new HashMap<>();
+        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(EnumAnnotation.class);
+        beansWithAnnotation.values().forEach(beanClass -> {
+            TestEventEnum[] value = beanClass.getClass().getAnnotation(EnumAnnotation.class).value();
+            if (value.length != 0 && beanClass instanceof EnumAnnotationProcessor) {
+                Arrays.stream(value).forEach(testEventEnum ->
+                        beansMap.put(testEventEnum,(EnumAnnotationProcessor)beanClass));
+            }
+        });
+        return beansMap;
+    }
 }
