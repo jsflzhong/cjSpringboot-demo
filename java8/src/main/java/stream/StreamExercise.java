@@ -2,6 +2,9 @@ package stream;
 
 import org.assertj.core.util.Lists;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -303,6 +306,30 @@ public class StreamExercise {
         System.out.println("when null list: id2:" + id2); //NullPointerException! (但是mybatis返回的List是默认非null的, 里面的obj会被初始化)
     }
 
+    /**
+     * check: Collections.sort and compareTo() of ZonedDateTime, to see which element is on the top of list
+     *
+     * result:
+     *  The latest time will be put on the top of the list.
+     */
+    public static void test12_sortList() {
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(LocalDateTime.parse("2019-04-18T10:00:00"), ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime2 = ZonedDateTime.of(LocalDateTime.parse("2019-04-19T10:00:00"), ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime3 = ZonedDateTime.of(LocalDateTime.parse("2019-04-17T10:00:00"), ZoneId.systemDefault());
+        User user1 = new User().setId(1).setBirthday(zonedDateTime);
+        User user2 = new User().setId(2).setBirthday(zonedDateTime2);
+        User user3 = new User().setId(3).setBirthday(zonedDateTime3);
+        ArrayList<User> users = new ArrayList<>();
+        users.add(user3);
+        users.add(user2);
+        users.add(user1);
+        System.out.println("users before:" + users); //users before:[User{id=3, name='null', birthday=2019-04-17T10:00+08:00[Asia/Shanghai]}, User{id=2, name='null', birthday=2019-04-19T10:00+08:00[Asia/Shanghai]}, User{id=1, name='null', birthday=2019-04-18T10:00+08:00[Asia/Shanghai]}]
+        //check this sort, which one is on the top of list?
+        Collections.sort(users,(o1,o2)-> o2.getBirthday().compareTo(o1.getBirthday()));
+        System.out.println("users after:" + users);//users after:[User{id=2, name='null', birthday=2019-04-19T10:00+08:00[Asia/Shanghai]}, User{id=1, name='null', birthday=2019-04-18T10:00+08:00[Asia/Shanghai]}, User{id=3, name='null', birthday=2019-04-17T10:00+08:00[Asia/Shanghai]}]
+
+    }
+
 
     public static void main(String[] args) {
         //ArrayList<String> list = Lists.newArrayList("test1", "tEst2", "Test3");
@@ -327,7 +354,7 @@ public class StreamExercise {
 
         //test7_sorted_advanced();
 
-        test11_getfirstElementId();
+        test12_sortList();
 
 
     }
