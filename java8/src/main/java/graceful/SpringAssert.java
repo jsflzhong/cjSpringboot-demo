@@ -11,13 +11,14 @@ import org.springframework.util.Assert;
  * Spring自己出了一套Assert,会在内部抛出java1.8的运行时异常, 比较方便. (是Spring的, 挺好用的.)
  * 这里总结出一套常用的API, 争取调用的都是"抛出同样异常的"API, 方便上层抓取.
  *
- * 注意: 别忘记要抓对应的异常.
+ * 注意: 别忘记要抓对应的异常: IllegalArgumentException (下面用的API, 都值抓这一种异常即可!)
  *
  * 总结(使用时直接看这里):
  * 1.Object: Assert.notNull()
  * 2.String: Assert.hasText() //会检查出空格值.   或: Assert.hasLength() ;//不会检查出空格值.
  * 3.Collection or Map: Assert.notEmpty();
- * 4.表达式为假时,抛异常: Assert.isTrue()
+ * 4.当表达式为假时,抛异常: Assert.isTrue()   //封装类Boolean也可以被检查.
+ *
  */
 public class SpringAssert {
 
@@ -178,15 +179,31 @@ public class SpringAssert {
      *
      * 注意, 是为假时,才会抛异常. 而不是为真时.
      * 注意, 没有这种API: 表达式为真时,就会抛异常. (没有!!! 只有假!)
+     * 注意, 封装类Boolean也可以被检查.
      *
      * 测试结果:
      *      @@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常, 模拟在这里处理...error:@@@a处理了,因为a是false,但是这里assert的是true,不符,所以抛异常了.
+     *      @@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常, 模拟在这里处理...error:@@@c处理了,封装类,值为false
      */
     private static void check_expression() {
         boolean a = false;
+        Boolean b = true; //封装类.
+        Boolean c = false; //封装类.
 
         try {
             Assert.isTrue(a,"@@@a处理了,因为a是false,但是这里assert的是true,不符,所以抛异常了.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("@@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常,模拟在这里处理...error:" + e.getMessage());
+        }
+
+        try {
+            Assert.isTrue(b,"@@@b处理了,封装类,但值为true");
+        } catch (IllegalArgumentException e) {
+            System.out.println("@@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常,模拟在这里处理...error:" + e.getMessage());
+        }
+
+        try {
+            Assert.isTrue(c,"@@@c处理了,封装类,值为false");
         } catch (IllegalArgumentException e) {
             System.out.println("@@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常,模拟在这里处理...error:" + e.getMessage());
         }
