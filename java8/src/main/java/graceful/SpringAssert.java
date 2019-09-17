@@ -14,10 +14,10 @@ import org.springframework.util.Assert;
  * 注意: 别忘记要抓对应的异常: IllegalArgumentException (下面用的API, 都值抓这一种异常即可!)
  *
  * 总结(使用时直接看这里):
- * 1.Object: Assert.notNull()
- * 2.String: Assert.hasText() //会检查出空格值.   或: Assert.hasLength() ;//不会检查出空格值.
- * 3.Collection or Map: Assert.notEmpty();
- * 4.当表达式为假时,抛异常: Assert.isTrue()   //封装类Boolean也可以被检查.
+ * 1.Object:                Assert.notNull()
+ * 2.Collection or Map:     Assert.notEmpty();
+ * 3.String:                Assert.hasText() //会检查出空格值.   或: Assert.hasLength() ;//不会检查出空格值.
+ * 4.当表达式为假时,抛异常:  Assert.isTrue()   //封装类Boolean也可以被检查.
  *
  */
 public class SpringAssert {

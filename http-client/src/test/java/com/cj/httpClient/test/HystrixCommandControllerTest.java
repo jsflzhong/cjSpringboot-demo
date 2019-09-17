@@ -17,9 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@AutoConfigureMockMvc
 public class HystrixCommandControllerTest {
 
     @Autowired
@@ -29,7 +29,7 @@ public class HystrixCommandControllerTest {
     public void setUp() throws Exception {
     }
 
-    @Test
+    //@Test
     public void restTemplate_get() throws Exception {
         RequestBuilder request;
 
