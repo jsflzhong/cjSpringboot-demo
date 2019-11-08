@@ -32,13 +32,21 @@ public class ExecutorPoolConfiguration {
                 TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
     }
 
+    /**
+     * 为了测试当最大线程数和任务队列满了后, 对拒绝策略的处理, 这里先设置小的三个数字, 让调用那边触发拒绝策略.
+     * 策略:RejectedExecutionHandler
+     *
+     * 测试结论:
+     *  1.满了后, 会触发拒绝handler, 该task会被抛弃.
+     *
+     */
     @Bean(name = "thirdPartyLogExecutor")
     public Executor getThirdPartyLogExecutor() {
         int corePoolSize = env.getProperty("threadPool.corePoolSize", Integer.class);
         int maximumPoolSize = env.getProperty("threadPool.maximumPoolSize",Integer.class);
         int keepAliveSeconds = env.getProperty("threadPool.keepAliveSeconds",Integer.class);
-        return new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveSeconds, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(),
+        return new ThreadPoolExecutor(1, 2, keepAliveSeconds, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(2), //todo. 生产环境引用这里时,把上面2个值替换成上面俩变量, 这里的capacity设为空, 默认是Integer.MAX_VALUE.
                 (r, executor) -> log.warn("[ThreadConfiguration - thirdPartyLogExecutor] Task Queue is full! New task rejected!"));
     }
 }

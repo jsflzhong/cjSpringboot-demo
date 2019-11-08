@@ -35,4 +35,10 @@ public class ThreadPoolController {
         threadPoolService.useThreadPool4();
         return "1";
     }
+
+    @GetMapping("/test5")
+    public Object test5() {
+        threadPoolService.useThreadPool5();
+        return "1";
+    }
 }
