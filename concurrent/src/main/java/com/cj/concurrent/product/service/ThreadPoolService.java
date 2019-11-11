@@ -6,12 +6,13 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class ThreadPoolService {
+public class ThreadPoolService implements ThreadPoolServiceI{
 
     @Autowired
     private Executor coeExecutor;
@@ -21,6 +22,8 @@ public class ThreadPoolService {
     private ForkJoinPool resendHomerResultMessageForkJoinPool;
     @Autowired
     private Executor thirdPartyLogExecutor;
+    @Autowired
+    private TransactionalService transactionalService;
 
     public void useThreadPool1() {
         log.info("@@@Thread1-1:{}", Thread.currentThread().getName());
@@ -84,6 +87,30 @@ public class ThreadPoolService {
             }
            log.info("###main thread, current time:" + i);
         }
+    }
+
+    /**
+     * 测试事务.
+     * 测试在子线程用了@Transactional(propagation = REQUIRES_NEW)后,如果子线程中发生exception后,是否会影响到主线程.
+     *
+     * 注意:
+     * 如果加了@transaction注解后,需要保证程序能够真实的链接的上数据库,否则报错:java.net.ConnectException: Connection refused: connect
+     * 所以这边的transactional测试中止, 在项目中直接测试的.看结论:
+     *
+     * 结论:
+     * 主线程service1中调用service2中的子线程时,如果子线程开@Transactional(propagation = REQUIRES_NEW), 而且子线程中抛异常的话, 那么两处都回滚.
+     * 主线程service1中调用service2中的子线程时,如果子线程开@Transactional(propagation = REQUIRES_NEW), 而且主线程中抛异常的话, 那么主线程回滚,但子线程不回滚.
+     * 主线程service1中调用service2中的子线程时,如果子线程开@Transactional(propagation = REQUIRES_NEW), 而且子线程中抛异常的话, 如果子线程try-catch了,那么主线程不回滚,子线程也不回滚!!(注意,不推荐在子线程的操作DB的方法中直接开try-catch)
+     * 主线程service1中调用service2中的子线程时,如果子线程开@Transactional(propagation = REQUIRES_NEW), 而且子线程中抛异常的话, 如果主线程在调用子线程的那一行那里try-catch了,那么主线程不回滚,子线程..?(不推荐, 子线程那里的代码会强行要求调用方开try-catch)
+     *
+     *
+     */
+    //@Transactional
+    public void useThreadPool6() throws InterruptedException {
+        log.info("@@@主线程开始运行,马上要调用子线程,并且子线程会引发异常.");
+        transactionalService.test1();
+        Thread.sleep(2000);
+        log.info("@@@主线程正常结束运行");
     }
 
     static class MyTask implements Runnable {
