@@ -1,11 +1,15 @@
 package com.cj.spring.exceptionHandler;
 
+import javax.validation.constraints.NotNull;
+
 import com.cj.common.exception.IllegalParamException;
 import com.cj.spring.common.entity.UserT;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/exception")
+@Validated
 public class ExceptionHandleController {
 
     /**
@@ -67,4 +72,29 @@ public class ExceptionHandleController {
     }
 
     /**需要自定义异常处理器.可以统一定义在common模块中.  @ExceptionHandler todo*/
+
+    /**
+     * 测试对非对象型的参数非空.
+     * 需要配合类头的@Validated + @NotNull
+     *
+     * 会抛异常: javax.validation.ConstraintViolationException, 会被异常处理器捕获.
+     */
+    @RequestMapping("/testNotNullParam1")
+    public Object testNotNullParam1(@NotNull String param1) {
+        return "1";
+    }
+
+    /**
+     * 测试对非对象型的参数非空.
+     * 不需要配合类头的@Validated, 只需要用@RequestParam在参数前即可.
+     *
+     * 会抛异常:org.springframework.web.bind.MissingServletRequestParameterException, 会被异常处理器捕获.
+     *
+     */
+    @RequestMapping("/testNotNullParam2")
+    public Object testNotNullParam2(@RequestParam String param2) {
+        return "1";
+    }
+
+
 }
