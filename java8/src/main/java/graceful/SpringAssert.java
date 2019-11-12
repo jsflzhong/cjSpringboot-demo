@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
+import enumTest.Enum1;
+
 /**
  * Spring自己出了一套Assert,会在内部抛出java1.8的运行时异常, 比较方便. (是Spring的, 挺好用的.)
  * 这里总结出一套常用的API, 争取调用的都是"抛出同样异常的"API, 方便上层抓取.
@@ -26,7 +28,9 @@ public class SpringAssert {
         //test_object();
         //test_String2();
         //test_Collection();
-        check_expression();
+        //check_expression();
+        //test_Enum();
+        test_Long();
     }
 
     /**
@@ -206,6 +210,26 @@ public class SpringAssert {
             Assert.isTrue(c,"@@@c处理了,封装类,值为false");
         } catch (IllegalArgumentException e) {
             System.out.println("@@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常,模拟在这里处理...error:" + e.getMessage());
+        }
+    }
+
+    private static void test_Enum() {
+        try {
+            Enum1 enum1 = null;
+            Assert.notNull(enum1, "@@@enum1 is null!");
+            System.out.println("由于上行代码抛异常了,所以这里不会被执行到.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("@@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常,模拟在这里处理...error:" + e.getMessage());
+        }
+    }
+
+    private static void test_Long() {
+        Long l = null;
+        try {
+            Assert.notNull(l, "@@@enum1 is null!");
+            System.out.println("由于上行代码抛异常了,所以这里不会被执行到.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("@@@我是上层代码, 我抓住了底层用spring的Assert抛出的运行时异常(Long),模拟在这里处理...error:" + e.getMessage());
         }
     }
 
