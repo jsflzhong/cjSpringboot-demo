@@ -31,6 +31,7 @@ public class Main implements JudgeAndExecute {
     /**
      * 用Optional来检查字符串String
      * 结论: Optional可以拿来检查String, 可以查出来null, 但是查不出来空值:"", 该空值会被认为非空.
+     * --update: 可以加filter来判断出来""值. 代码已更新.
      */
     static void testString() {
         String s1 = "";
@@ -48,6 +49,11 @@ public class Main implements JudgeAndExecute {
         //不要写成throw new ...
         Optional.ofNullable(s2).orElseThrow(() -> new BusinessException("@@@s2 is null!!")); //执行
 
+        //用filter可以判断出""和null.
+        String a = "";
+        String b = null;
+        Optional.ofNullable(a).filter(StringUtils::isNotBlank).ifPresent(c -> System.out.println("1111," + c));
+        Optional.ofNullable(b).filter(StringUtils::isNotBlank).ifPresent(c -> System.out.println("2222," + c));
     }
 
     /**

@@ -1,6 +1,9 @@
 package Common;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class User {
 
@@ -44,5 +47,13 @@ public class User {
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +
                 '}';
+    }
+
+    public static void main(String[] args) {
+        String a = "";
+        String b = null;
+
+        Optional.ofNullable(a).filter(StringUtils::isNotBlank).ifPresent(c -> System.out.println("1111," + c));
+        Optional.ofNullable(b).filter(StringUtils::isNotBlank).ifPresent(c -> System.out.println("2222," + c));
     }
 }
