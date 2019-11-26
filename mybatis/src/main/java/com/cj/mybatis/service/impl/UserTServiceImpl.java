@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.cj.common.entity.ResponseBean;
 import com.cj.mybatis.domain.UserT;
+import com.cj.mybatis.service.JunitSerivce;
 import com.cj.mybatis.service.UserTService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,6 +104,27 @@ public class UserTServiceImpl extends BaseServiceImpl<UserT> implements UserTSer
         if(1 == 1) {
             int i = 1/0;
         }
+    }
+
+    @Autowired
+    private JunitSerivce junitSerivce;
+
+    /**
+     * 测试:
+     *  service1中开事务--调用service2(service2中抛异常,但是try了)--回到service1中抛异常--service1全部事务是否回滚.
+     * @param userT
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResponseBean<List<UserT>> testTransaction_inDiffClass(UserT userT) {
+        save(userT);
+
+        junitSerivce.testTransactionInDiffClass(); //这里面的方法会抛异常,但方法头上并没有用@Transaction显式的开启事务.
+
+        int i = 1/0; //测试第一行是否能被这行的异常给回滚.
+
+        return ResponseBean.successNoData();
     }
 
 }

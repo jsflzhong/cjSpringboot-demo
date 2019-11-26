@@ -1,5 +1,6 @@
 package Common;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -12,6 +13,17 @@ public class User {
     private String name;
 
     private ZonedDateTime birthday;
+
+    private BigDecimal price;
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public User setPrice(BigDecimal price) {
+        this.price = price;
+        return this;
+    }
 
     public ZonedDateTime getBirthday() {
         return birthday;
@@ -52,8 +64,10 @@ public class User {
     public static void main(String[] args) {
         String a = "";
         String b = null;
+        String e = null;
 
         Optional.ofNullable(a).filter(StringUtils::isNotBlank).ifPresent(c -> System.out.println("1111," + c));
         Optional.ofNullable(b).filter(StringUtils::isNotBlank).ifPresent(c -> System.out.println("2222," + c));
+
     }
 }

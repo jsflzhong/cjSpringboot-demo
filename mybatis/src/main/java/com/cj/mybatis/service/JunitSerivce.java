@@ -13,4 +13,6 @@ public interface JunitSerivce {
     UserT save(UserT user);
 
     UserT update(UserT user);
+
+    void testTransactionInDiffClass();
 }

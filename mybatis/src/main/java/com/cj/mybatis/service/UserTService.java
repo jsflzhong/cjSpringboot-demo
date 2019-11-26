@@ -23,4 +23,6 @@ public interface UserTService extends BaseService<UserT> {
     ResponseBean<List<UserT>> getByUsernameForUnitTest(String userName);
 
     ResponseBean<List<UserT>> testTransaction_inSameClass(UserT userT);
+
+    ResponseBean<List<UserT>> testTransaction_inDiffClass(UserT userT);
 }

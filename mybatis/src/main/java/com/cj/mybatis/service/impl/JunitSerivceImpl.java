@@ -58,4 +58,14 @@ public class JunitSerivceImpl implements JunitSerivce {
         logger.info("@@@update...");
         return user;
     }
+
+    @Override
+    public void testTransactionInDiffClass() {
+        try {
+            int i = 1/0;
+        } catch (Exception e) {
+            System.out.println("@@@1111111111111111111");
+            e.printStackTrace();
+        }
+    }
 }
