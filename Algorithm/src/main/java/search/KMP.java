@@ -58,4 +58,44 @@ public class KMP {
         return -1;
     }
 
+    /**
+     * Refer to Roger's best way
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    public static int way2_Roger(String haystack, String needle) {
+        char[] ch = haystack.toCharArray();
+        char[] nh = needle.toCharArray();
+        if (nh.length == 0) {
+            return 0;
+        }
+        int[] next = new int[nh.length + 1];
+        int k = -1;
+        int j = 0;
+        next[0] = -1;
+        while (j < nh.length) {
+            if (k == -1 || nh[k] == nh[j]) {
+                ++k;
+                ++j;
+                next[j] = k;
+            } else {
+                k = next[k];
+            }
+        }
+        int i = -1;
+        j = -1;
+        while (i < ch.length && j < nh.length) {
+            if (j == -1 || ch[i] == nh[j]) {
+                ++i;
+                ++j;
+            } else {
+                j = next[j];
+            }
+        }
+        if (j == nh.length) {
+            return i - j;
+        }
+        return -1;
+    }
 }
