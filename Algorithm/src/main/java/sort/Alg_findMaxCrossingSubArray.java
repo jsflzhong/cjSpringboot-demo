@@ -44,4 +44,30 @@ public class Alg_findMaxCrossingSubArray {
     }
 
 
+    public static void main(String[] args) {
+        findMaxCrossingSubArray(generateSourceArray(), 0, 4, 10);
+    }
+
+    static class ArrayObject {
+        //The indicator of maximum value in left array
+        int maxLeft = 0;
+        //The indicator of maximum value in right array
+        int maxRight = 0;
+
+        public int getMaxLeft() {
+            return maxLeft;
+        }
+
+        public void setMaxLeft(int maxLeft) {
+            this.maxLeft = maxLeft;
+        }
+
+        public int getMaxRight() {
+            return maxRight;
+        }
+
+        public void setMaxRight(int maxRight) {
+            this.maxRight = maxRight;
+        }
+    }
 }
